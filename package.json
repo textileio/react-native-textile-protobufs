@@ -1,9 +1,9 @@
 {
   "name": "@textile/react-native-protobufs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides a protobufs for Textile APIs",
   "main": "dist/textile-go.js",
-  "types" : "dist/textile-go.d.ts",
+  "types": "dist/textile-go.d.ts",
   "files": [
     "dist/index.js",
     "dist/index.d.ts"
@@ -22,5 +22,13 @@
   },
   "dependencies": {
     "protobufjs": "^6.8.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/textileio/react-native-textile-protobufs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/textileio/react-native-textile-protobufs/issues"
+  },
+  "homepage": "https://github.com/textileio/react-native-textile-protobufs#readme"
 }
