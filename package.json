@@ -1,0 +1,26 @@
+{
+  "name": "@textile/react-native-protobufs",
+  "version": "1.0.0",
+  "description": "Provides a protobufs for Textile APIs",
+  "main": "dist/textile-go.js",
+  "types" : "dist/textile-go.d.ts",
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "textile.io",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.2.2"
+  },
+  "peerDependencies": {
+    "react-native": "^0.57.1"
+  },
+  "dependencies": {
+    "protobufjs": "^6.8.8"
+  }
+}
