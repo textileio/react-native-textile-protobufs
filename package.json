@@ -1,6 +1,6 @@
 {
   "name": "@textile/react-native-protobufs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Provides a protobufs for Textile APIs",
   "main": "dist/textile-go.js",
   "types": "dist/textile-go.d.ts",
