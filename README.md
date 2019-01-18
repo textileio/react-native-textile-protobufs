@@ -2,10 +2,10 @@
 
 ## Getting started
 
-`$ npm install @textile/react-native-textile-protobufs --save`
+`$ npm install @textile/react-native-protobufs --save`
 
 ## Example
 
 ```javascript
-import { IDirectory } from '@textile/react-native-textile-protobufs'
+import { IDirectory } from '@textile/react-native-protobufs'
 ```
