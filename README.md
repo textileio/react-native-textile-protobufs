@@ -2,4 +2,4 @@
 
 ## Install
 
-`npm install \@textile/textile/react-native-protobufs`
+`npm install @textile/textile/react-native-protobufs`
