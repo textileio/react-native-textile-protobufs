@@ -1,5 +1,5 @@
 # react-native-textile-protobufs
 
-## Install
+## Getting started
 
-`npm install @textile/textile/react-native-protobufs`
+`$ npm install @textile/react-native-textile-protobufs --save`
