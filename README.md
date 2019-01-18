@@ -1,4 +1,4 @@
-# react-native-textile-protobufs
+# textile's react native protobufs
 
 ## Getting started
 
