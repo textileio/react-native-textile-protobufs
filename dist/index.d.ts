@@ -419,6 +419,96 @@ export class CafeSession implements ICafeSession {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a CafeSessions. */
+export interface ICafeSessions {
+
+    /** CafeSessions values */
+    values?: (ICafeSession[]|null);
+}
+
+/** Represents a CafeSessions. */
+export class CafeSessions implements ICafeSessions {
+
+    /**
+     * Constructs a new CafeSessions.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafeSessions);
+
+    /** CafeSessions values. */
+    public values: ICafeSession[];
+
+    /**
+     * Creates a new CafeSessions instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafeSessions instance
+     */
+    public static create(properties?: ICafeSessions): CafeSessions;
+
+    /**
+     * Encodes the specified CafeSessions message. Does not implicitly {@link CafeSessions.verify|verify} messages.
+     * @param message CafeSessions message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafeSessions, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafeSessions message, length delimited. Does not implicitly {@link CafeSessions.verify|verify} messages.
+     * @param message CafeSessions message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafeSessions, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafeSessions message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafeSessions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafeSessions;
+
+    /**
+     * Decodes a CafeSessions message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafeSessions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafeSessions;
+
+    /**
+     * Verifies a CafeSessions message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafeSessions message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafeSessions
+     */
+    public static fromObject(object: { [k: string]: any }): CafeSessions;
+
+    /**
+     * Creates a plain object from a CafeSessions message. Also converts values to other types if specified.
+     * @param message CafeSessions
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafeSessions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafeSessions to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a CafeRefreshSession. */
 export interface ICafeRefreshSession {
 
@@ -510,6 +600,402 @@ export class CafeRefreshSession implements ICafeRefreshSession {
 
     /**
      * Converts this CafeRefreshSession to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a CafePublishContact. */
+export interface ICafePublishContact {
+
+    /** CafePublishContact token */
+    token?: (string|null);
+
+    /** CafePublishContact contact */
+    contact?: (IContact|null);
+}
+
+/** Represents a CafePublishContact. */
+export class CafePublishContact implements ICafePublishContact {
+
+    /**
+     * Constructs a new CafePublishContact.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafePublishContact);
+
+    /** CafePublishContact token. */
+    public token: string;
+
+    /** CafePublishContact contact. */
+    public contact?: (IContact|null);
+
+    /**
+     * Creates a new CafePublishContact instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafePublishContact instance
+     */
+    public static create(properties?: ICafePublishContact): CafePublishContact;
+
+    /**
+     * Encodes the specified CafePublishContact message. Does not implicitly {@link CafePublishContact.verify|verify} messages.
+     * @param message CafePublishContact message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafePublishContact, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafePublishContact message, length delimited. Does not implicitly {@link CafePublishContact.verify|verify} messages.
+     * @param message CafePublishContact message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafePublishContact, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafePublishContact message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafePublishContact
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafePublishContact;
+
+    /**
+     * Decodes a CafePublishContact message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafePublishContact
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafePublishContact;
+
+    /**
+     * Verifies a CafePublishContact message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafePublishContact message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafePublishContact
+     */
+    public static fromObject(object: { [k: string]: any }): CafePublishContact;
+
+    /**
+     * Creates a plain object from a CafePublishContact message. Also converts values to other types if specified.
+     * @param message CafePublishContact
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafePublishContact, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafePublishContact to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a CafePublishContactAck. */
+export interface ICafePublishContactAck {
+
+    /** CafePublishContactAck id */
+    id?: (string|null);
+}
+
+/** Represents a CafePublishContactAck. */
+export class CafePublishContactAck implements ICafePublishContactAck {
+
+    /**
+     * Constructs a new CafePublishContactAck.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafePublishContactAck);
+
+    /** CafePublishContactAck id. */
+    public id: string;
+
+    /**
+     * Creates a new CafePublishContactAck instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafePublishContactAck instance
+     */
+    public static create(properties?: ICafePublishContactAck): CafePublishContactAck;
+
+    /**
+     * Encodes the specified CafePublishContactAck message. Does not implicitly {@link CafePublishContactAck.verify|verify} messages.
+     * @param message CafePublishContactAck message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafePublishContactAck, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafePublishContactAck message, length delimited. Does not implicitly {@link CafePublishContactAck.verify|verify} messages.
+     * @param message CafePublishContactAck message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafePublishContactAck, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafePublishContactAck message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafePublishContactAck
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafePublishContactAck;
+
+    /**
+     * Decodes a CafePublishContactAck message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafePublishContactAck
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafePublishContactAck;
+
+    /**
+     * Verifies a CafePublishContactAck message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafePublishContactAck message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafePublishContactAck
+     */
+    public static fromObject(object: { [k: string]: any }): CafePublishContactAck;
+
+    /**
+     * Creates a plain object from a CafePublishContactAck message. Also converts values to other types if specified.
+     * @param message CafePublishContactAck
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafePublishContactAck, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafePublishContactAck to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a CafeContactQuery. */
+export interface ICafeContactQuery {
+
+    /** CafeContactQuery token */
+    token?: (string|null);
+
+    /** CafeContactQuery findId */
+    findId?: (string|null);
+
+    /** CafeContactQuery findAddress */
+    findAddress?: (string|null);
+
+    /** CafeContactQuery findUsername */
+    findUsername?: (string|null);
+
+    /** CafeContactQuery limit */
+    limit?: (number|null);
+
+    /** CafeContactQuery wait */
+    wait?: (number|null);
+}
+
+/** Represents a CafeContactQuery. */
+export class CafeContactQuery implements ICafeContactQuery {
+
+    /**
+     * Constructs a new CafeContactQuery.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafeContactQuery);
+
+    /** CafeContactQuery token. */
+    public token: string;
+
+    /** CafeContactQuery findId. */
+    public findId: string;
+
+    /** CafeContactQuery findAddress. */
+    public findAddress: string;
+
+    /** CafeContactQuery findUsername. */
+    public findUsername: string;
+
+    /** CafeContactQuery limit. */
+    public limit: number;
+
+    /** CafeContactQuery wait. */
+    public wait: number;
+
+    /**
+     * Creates a new CafeContactQuery instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafeContactQuery instance
+     */
+    public static create(properties?: ICafeContactQuery): CafeContactQuery;
+
+    /**
+     * Encodes the specified CafeContactQuery message. Does not implicitly {@link CafeContactQuery.verify|verify} messages.
+     * @param message CafeContactQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafeContactQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafeContactQuery message, length delimited. Does not implicitly {@link CafeContactQuery.verify|verify} messages.
+     * @param message CafeContactQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafeContactQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafeContactQuery message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafeContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafeContactQuery;
+
+    /**
+     * Decodes a CafeContactQuery message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafeContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafeContactQuery;
+
+    /**
+     * Verifies a CafeContactQuery message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafeContactQuery message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafeContactQuery
+     */
+    public static fromObject(object: { [k: string]: any }): CafeContactQuery;
+
+    /**
+     * Creates a plain object from a CafeContactQuery message. Also converts values to other types if specified.
+     * @param message CafeContactQuery
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafeContactQuery, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafeContactQuery to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a CafeContactQueryResult. */
+export interface ICafeContactQueryResult {
+
+    /** CafeContactQueryResult contacts */
+    contacts?: (IContact[]|null);
+}
+
+/** Represents a CafeContactQueryResult. */
+export class CafeContactQueryResult implements ICafeContactQueryResult {
+
+    /**
+     * Constructs a new CafeContactQueryResult.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafeContactQueryResult);
+
+    /** CafeContactQueryResult contacts. */
+    public contacts: IContact[];
+
+    /**
+     * Creates a new CafeContactQueryResult instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafeContactQueryResult instance
+     */
+    public static create(properties?: ICafeContactQueryResult): CafeContactQueryResult;
+
+    /**
+     * Encodes the specified CafeContactQueryResult message. Does not implicitly {@link CafeContactQueryResult.verify|verify} messages.
+     * @param message CafeContactQueryResult message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafeContactQueryResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafeContactQueryResult message, length delimited. Does not implicitly {@link CafeContactQueryResult.verify|verify} messages.
+     * @param message CafeContactQueryResult message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafeContactQueryResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafeContactQueryResult message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafeContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafeContactQueryResult;
+
+    /**
+     * Decodes a CafeContactQueryResult message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafeContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafeContactQueryResult;
+
+    /**
+     * Verifies a CafeContactQueryResult message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafeContactQueryResult message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafeContactQueryResult
+     */
+    public static fromObject(object: { [k: string]: any }): CafeContactQueryResult;
+
+    /**
+     * Creates a plain object from a CafeContactQueryResult message. Also converts values to other types if specified.
+     * @param message CafeContactQueryResult
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafeContactQueryResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafeContactQueryResult to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -2093,6 +2579,225 @@ export class Cafe implements ICafe {
     public toJSON(): { [k: string]: any };
 }
 
+/** Properties of a CafePubSubContactQuery. */
+export interface ICafePubSubContactQuery {
+
+    /** CafePubSubContactQuery id */
+    id?: (string|null);
+
+    /** CafePubSubContactQuery findId */
+    findId?: (string|null);
+
+    /** CafePubSubContactQuery findAddress */
+    findAddress?: (string|null);
+
+    /** CafePubSubContactQuery findUsername */
+    findUsername?: (string|null);
+
+    /** CafePubSubContactQuery responseType */
+    responseType?: (CafePubSubContactQuery.ResponseType|null);
+}
+
+/** Represents a CafePubSubContactQuery. */
+export class CafePubSubContactQuery implements ICafePubSubContactQuery {
+
+    /**
+     * Constructs a new CafePubSubContactQuery.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafePubSubContactQuery);
+
+    /** CafePubSubContactQuery id. */
+    public id: string;
+
+    /** CafePubSubContactQuery findId. */
+    public findId: string;
+
+    /** CafePubSubContactQuery findAddress. */
+    public findAddress: string;
+
+    /** CafePubSubContactQuery findUsername. */
+    public findUsername: string;
+
+    /** CafePubSubContactQuery responseType. */
+    public responseType: CafePubSubContactQuery.ResponseType;
+
+    /**
+     * Creates a new CafePubSubContactQuery instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafePubSubContactQuery instance
+     */
+    public static create(properties?: ICafePubSubContactQuery): CafePubSubContactQuery;
+
+    /**
+     * Encodes the specified CafePubSubContactQuery message. Does not implicitly {@link CafePubSubContactQuery.verify|verify} messages.
+     * @param message CafePubSubContactQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafePubSubContactQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafePubSubContactQuery message, length delimited. Does not implicitly {@link CafePubSubContactQuery.verify|verify} messages.
+     * @param message CafePubSubContactQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafePubSubContactQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafePubSubContactQuery message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafePubSubContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafePubSubContactQuery;
+
+    /**
+     * Decodes a CafePubSubContactQuery message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafePubSubContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafePubSubContactQuery;
+
+    /**
+     * Verifies a CafePubSubContactQuery message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafePubSubContactQuery message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafePubSubContactQuery
+     */
+    public static fromObject(object: { [k: string]: any }): CafePubSubContactQuery;
+
+    /**
+     * Creates a plain object from a CafePubSubContactQuery message. Also converts values to other types if specified.
+     * @param message CafePubSubContactQuery
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafePubSubContactQuery, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafePubSubContactQuery to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+export namespace CafePubSubContactQuery {
+
+    /** ResponseType enum. */
+    enum ResponseType {
+        P2P = 0,
+        PUBSUB = 1
+    }
+}
+
+/** Properties of a CafePubSubContactQueryResult. */
+export interface ICafePubSubContactQueryResult {
+
+    /** CafePubSubContactQueryResult id */
+    id?: (string|null);
+
+    /** CafePubSubContactQueryResult contacts */
+    contacts?: (IContact[]|null);
+}
+
+/** Represents a CafePubSubContactQueryResult. */
+export class CafePubSubContactQueryResult implements ICafePubSubContactQueryResult {
+
+    /**
+     * Constructs a new CafePubSubContactQueryResult.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafePubSubContactQueryResult);
+
+    /** CafePubSubContactQueryResult id. */
+    public id: string;
+
+    /** CafePubSubContactQueryResult contacts. */
+    public contacts: IContact[];
+
+    /**
+     * Creates a new CafePubSubContactQueryResult instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafePubSubContactQueryResult instance
+     */
+    public static create(properties?: ICafePubSubContactQueryResult): CafePubSubContactQueryResult;
+
+    /**
+     * Encodes the specified CafePubSubContactQueryResult message. Does not implicitly {@link CafePubSubContactQueryResult.verify|verify} messages.
+     * @param message CafePubSubContactQueryResult message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafePubSubContactQueryResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafePubSubContactQueryResult message, length delimited. Does not implicitly {@link CafePubSubContactQueryResult.verify|verify} messages.
+     * @param message CafePubSubContactQueryResult message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafePubSubContactQueryResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafePubSubContactQueryResult message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafePubSubContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafePubSubContactQueryResult;
+
+    /**
+     * Decodes a CafePubSubContactQueryResult message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafePubSubContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafePubSubContactQueryResult;
+
+    /**
+     * Verifies a CafePubSubContactQueryResult message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafePubSubContactQueryResult message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafePubSubContactQueryResult
+     */
+    public static fromObject(object: { [k: string]: any }): CafePubSubContactQueryResult;
+
+    /**
+     * Creates a plain object from a CafePubSubContactQueryResult message. Also converts values to other types if specified.
+     * @param message CafePubSubContactQueryResult
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafePubSubContactQueryResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafePubSubContactQueryResult to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
 /** Properties of a Message. */
 export interface IMessage {
 
@@ -2224,6 +2929,12 @@ export namespace Message {
         CAFE_DELETE_MESSAGES = 63,
         CAFE_DELETE_MESSAGES_ACK = 64,
         CAFE_YOU_HAVE_MAIL = 65,
+        CAFE_PUBLISH_CONTACT = 66,
+        CAFE_PUBLISH_CONTACT_ACK = 67,
+        CAFE_CONTACT_QUERY = 68,
+        CAFE_CONTACT_QUERY_RES = 69,
+        CAFE_PUBSUB_CONTACT_QUERY = 100,
+        CAFE_PUBSUB_CONTACT_QUERY_RES = 101,
         ERROR = 500
     }
 }
@@ -3272,6 +3983,18 @@ export interface IThreadInvite {
 
     /** ThreadInvite initiator */
     initiator?: (string|null);
+
+    /** ThreadInvite contact */
+    contact?: (IContact|null);
+
+    /** ThreadInvite type */
+    type?: (number|null);
+
+    /** ThreadInvite sharing */
+    sharing?: (number|null);
+
+    /** ThreadInvite members */
+    members?: (string[]|null);
 }
 
 /** Represents a ThreadInvite. */
@@ -3294,6 +4017,18 @@ export class ThreadInvite implements IThreadInvite {
 
     /** ThreadInvite initiator. */
     public initiator: string;
+
+    /** ThreadInvite contact. */
+    public contact?: (IContact|null);
+
+    /** ThreadInvite type. */
+    public type: number;
+
+    /** ThreadInvite sharing. */
+    public sharing: number;
+
+    /** ThreadInvite members. */
+    public members: string[];
 
     /**
      * Creates a new ThreadInvite instance using the specified properties.

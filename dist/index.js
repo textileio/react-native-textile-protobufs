@@ -1001,6 +1001,214 @@ export const CafeSession = $root.CafeSession = (() => {
     return CafeSession;
 })();
 
+export const CafeSessions = $root.CafeSessions = (() => {
+
+    /**
+     * Properties of a CafeSessions.
+     * @exports ICafeSessions
+     * @interface ICafeSessions
+     * @property {Array.<ICafeSession>|null} [values] CafeSessions values
+     */
+
+    /**
+     * Constructs a new CafeSessions.
+     * @exports CafeSessions
+     * @classdesc Represents a CafeSessions.
+     * @implements ICafeSessions
+     * @constructor
+     * @param {ICafeSessions=} [properties] Properties to set
+     */
+    function CafeSessions(properties) {
+        this.values = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafeSessions values.
+     * @member {Array.<ICafeSession>} values
+     * @memberof CafeSessions
+     * @instance
+     */
+    CafeSessions.prototype.values = $util.emptyArray;
+
+    /**
+     * Creates a new CafeSessions instance using the specified properties.
+     * @function create
+     * @memberof CafeSessions
+     * @static
+     * @param {ICafeSessions=} [properties] Properties to set
+     * @returns {CafeSessions} CafeSessions instance
+     */
+    CafeSessions.create = function create(properties) {
+        return new CafeSessions(properties);
+    };
+
+    /**
+     * Encodes the specified CafeSessions message. Does not implicitly {@link CafeSessions.verify|verify} messages.
+     * @function encode
+     * @memberof CafeSessions
+     * @static
+     * @param {ICafeSessions} message CafeSessions message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeSessions.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.values != null && message.values.length)
+            for (let i = 0; i < message.values.length; ++i)
+                $root.CafeSession.encode(message.values[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafeSessions message, length delimited. Does not implicitly {@link CafeSessions.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafeSessions
+     * @static
+     * @param {ICafeSessions} message CafeSessions message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeSessions.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafeSessions message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafeSessions
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafeSessions} CafeSessions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeSessions.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafeSessions();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.values && message.values.length))
+                    message.values = [];
+                message.values.push($root.CafeSession.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafeSessions message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafeSessions
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafeSessions} CafeSessions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeSessions.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafeSessions message.
+     * @function verify
+     * @memberof CafeSessions
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafeSessions.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.values != null && message.hasOwnProperty("values")) {
+            if (!Array.isArray(message.values))
+                return "values: array expected";
+            for (let i = 0; i < message.values.length; ++i) {
+                let error = $root.CafeSession.verify(message.values[i]);
+                if (error)
+                    return "values." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a CafeSessions message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafeSessions
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafeSessions} CafeSessions
+     */
+    CafeSessions.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafeSessions)
+            return object;
+        let message = new $root.CafeSessions();
+        if (object.values) {
+            if (!Array.isArray(object.values))
+                throw TypeError(".CafeSessions.values: array expected");
+            message.values = [];
+            for (let i = 0; i < object.values.length; ++i) {
+                if (typeof object.values[i] !== "object")
+                    throw TypeError(".CafeSessions.values: object expected");
+                message.values[i] = $root.CafeSession.fromObject(object.values[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafeSessions message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafeSessions
+     * @static
+     * @param {CafeSessions} message CafeSessions
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafeSessions.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.values = [];
+        if (message.values && message.values.length) {
+            object.values = [];
+            for (let j = 0; j < message.values.length; ++j)
+                object.values[j] = $root.CafeSession.toObject(message.values[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this CafeSessions to JSON.
+     * @function toJSON
+     * @memberof CafeSessions
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafeSessions.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafeSessions;
+})();
+
 export const CafeRefreshSession = $root.CafeRefreshSession = (() => {
 
     /**
@@ -1209,6 +1417,914 @@ export const CafeRefreshSession = $root.CafeRefreshSession = (() => {
     };
 
     return CafeRefreshSession;
+})();
+
+export const CafePublishContact = $root.CafePublishContact = (() => {
+
+    /**
+     * Properties of a CafePublishContact.
+     * @exports ICafePublishContact
+     * @interface ICafePublishContact
+     * @property {string|null} [token] CafePublishContact token
+     * @property {IContact|null} [contact] CafePublishContact contact
+     */
+
+    /**
+     * Constructs a new CafePublishContact.
+     * @exports CafePublishContact
+     * @classdesc Represents a CafePublishContact.
+     * @implements ICafePublishContact
+     * @constructor
+     * @param {ICafePublishContact=} [properties] Properties to set
+     */
+    function CafePublishContact(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafePublishContact token.
+     * @member {string} token
+     * @memberof CafePublishContact
+     * @instance
+     */
+    CafePublishContact.prototype.token = "";
+
+    /**
+     * CafePublishContact contact.
+     * @member {IContact|null|undefined} contact
+     * @memberof CafePublishContact
+     * @instance
+     */
+    CafePublishContact.prototype.contact = null;
+
+    /**
+     * Creates a new CafePublishContact instance using the specified properties.
+     * @function create
+     * @memberof CafePublishContact
+     * @static
+     * @param {ICafePublishContact=} [properties] Properties to set
+     * @returns {CafePublishContact} CafePublishContact instance
+     */
+    CafePublishContact.create = function create(properties) {
+        return new CafePublishContact(properties);
+    };
+
+    /**
+     * Encodes the specified CafePublishContact message. Does not implicitly {@link CafePublishContact.verify|verify} messages.
+     * @function encode
+     * @memberof CafePublishContact
+     * @static
+     * @param {ICafePublishContact} message CafePublishContact message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePublishContact.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.token != null && message.hasOwnProperty("token"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.token);
+        if (message.contact != null && message.hasOwnProperty("contact"))
+            $root.Contact.encode(message.contact, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafePublishContact message, length delimited. Does not implicitly {@link CafePublishContact.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafePublishContact
+     * @static
+     * @param {ICafePublishContact} message CafePublishContact message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePublishContact.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafePublishContact message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafePublishContact
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafePublishContact} CafePublishContact
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePublishContact.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafePublishContact();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.token = reader.string();
+                break;
+            case 2:
+                message.contact = $root.Contact.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafePublishContact message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafePublishContact
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafePublishContact} CafePublishContact
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePublishContact.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafePublishContact message.
+     * @function verify
+     * @memberof CafePublishContact
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafePublishContact.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.token != null && message.hasOwnProperty("token"))
+            if (!$util.isString(message.token))
+                return "token: string expected";
+        if (message.contact != null && message.hasOwnProperty("contact")) {
+            let error = $root.Contact.verify(message.contact);
+            if (error)
+                return "contact." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a CafePublishContact message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafePublishContact
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafePublishContact} CafePublishContact
+     */
+    CafePublishContact.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafePublishContact)
+            return object;
+        let message = new $root.CafePublishContact();
+        if (object.token != null)
+            message.token = String(object.token);
+        if (object.contact != null) {
+            if (typeof object.contact !== "object")
+                throw TypeError(".CafePublishContact.contact: object expected");
+            message.contact = $root.Contact.fromObject(object.contact);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafePublishContact message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafePublishContact
+     * @static
+     * @param {CafePublishContact} message CafePublishContact
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafePublishContact.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.token = "";
+            object.contact = null;
+        }
+        if (message.token != null && message.hasOwnProperty("token"))
+            object.token = message.token;
+        if (message.contact != null && message.hasOwnProperty("contact"))
+            object.contact = $root.Contact.toObject(message.contact, options);
+        return object;
+    };
+
+    /**
+     * Converts this CafePublishContact to JSON.
+     * @function toJSON
+     * @memberof CafePublishContact
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafePublishContact.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafePublishContact;
+})();
+
+export const CafePublishContactAck = $root.CafePublishContactAck = (() => {
+
+    /**
+     * Properties of a CafePublishContactAck.
+     * @exports ICafePublishContactAck
+     * @interface ICafePublishContactAck
+     * @property {string|null} [id] CafePublishContactAck id
+     */
+
+    /**
+     * Constructs a new CafePublishContactAck.
+     * @exports CafePublishContactAck
+     * @classdesc Represents a CafePublishContactAck.
+     * @implements ICafePublishContactAck
+     * @constructor
+     * @param {ICafePublishContactAck=} [properties] Properties to set
+     */
+    function CafePublishContactAck(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafePublishContactAck id.
+     * @member {string} id
+     * @memberof CafePublishContactAck
+     * @instance
+     */
+    CafePublishContactAck.prototype.id = "";
+
+    /**
+     * Creates a new CafePublishContactAck instance using the specified properties.
+     * @function create
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {ICafePublishContactAck=} [properties] Properties to set
+     * @returns {CafePublishContactAck} CafePublishContactAck instance
+     */
+    CafePublishContactAck.create = function create(properties) {
+        return new CafePublishContactAck(properties);
+    };
+
+    /**
+     * Encodes the specified CafePublishContactAck message. Does not implicitly {@link CafePublishContactAck.verify|verify} messages.
+     * @function encode
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {ICafePublishContactAck} message CafePublishContactAck message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePublishContactAck.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafePublishContactAck message, length delimited. Does not implicitly {@link CafePublishContactAck.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {ICafePublishContactAck} message CafePublishContactAck message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePublishContactAck.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafePublishContactAck message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafePublishContactAck} CafePublishContactAck
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePublishContactAck.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafePublishContactAck();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafePublishContactAck message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafePublishContactAck} CafePublishContactAck
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePublishContactAck.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafePublishContactAck message.
+     * @function verify
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafePublishContactAck.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a CafePublishContactAck message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafePublishContactAck} CafePublishContactAck
+     */
+    CafePublishContactAck.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafePublishContactAck)
+            return object;
+        let message = new $root.CafePublishContactAck();
+        if (object.id != null)
+            message.id = String(object.id);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafePublishContactAck message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafePublishContactAck
+     * @static
+     * @param {CafePublishContactAck} message CafePublishContactAck
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafePublishContactAck.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.id = "";
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        return object;
+    };
+
+    /**
+     * Converts this CafePublishContactAck to JSON.
+     * @function toJSON
+     * @memberof CafePublishContactAck
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafePublishContactAck.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafePublishContactAck;
+})();
+
+export const CafeContactQuery = $root.CafeContactQuery = (() => {
+
+    /**
+     * Properties of a CafeContactQuery.
+     * @exports ICafeContactQuery
+     * @interface ICafeContactQuery
+     * @property {string|null} [token] CafeContactQuery token
+     * @property {string|null} [findId] CafeContactQuery findId
+     * @property {string|null} [findAddress] CafeContactQuery findAddress
+     * @property {string|null} [findUsername] CafeContactQuery findUsername
+     * @property {number|null} [limit] CafeContactQuery limit
+     * @property {number|null} [wait] CafeContactQuery wait
+     */
+
+    /**
+     * Constructs a new CafeContactQuery.
+     * @exports CafeContactQuery
+     * @classdesc Represents a CafeContactQuery.
+     * @implements ICafeContactQuery
+     * @constructor
+     * @param {ICafeContactQuery=} [properties] Properties to set
+     */
+    function CafeContactQuery(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafeContactQuery token.
+     * @member {string} token
+     * @memberof CafeContactQuery
+     * @instance
+     */
+    CafeContactQuery.prototype.token = "";
+
+    /**
+     * CafeContactQuery findId.
+     * @member {string} findId
+     * @memberof CafeContactQuery
+     * @instance
+     */
+    CafeContactQuery.prototype.findId = "";
+
+    /**
+     * CafeContactQuery findAddress.
+     * @member {string} findAddress
+     * @memberof CafeContactQuery
+     * @instance
+     */
+    CafeContactQuery.prototype.findAddress = "";
+
+    /**
+     * CafeContactQuery findUsername.
+     * @member {string} findUsername
+     * @memberof CafeContactQuery
+     * @instance
+     */
+    CafeContactQuery.prototype.findUsername = "";
+
+    /**
+     * CafeContactQuery limit.
+     * @member {number} limit
+     * @memberof CafeContactQuery
+     * @instance
+     */
+    CafeContactQuery.prototype.limit = 0;
+
+    /**
+     * CafeContactQuery wait.
+     * @member {number} wait
+     * @memberof CafeContactQuery
+     * @instance
+     */
+    CafeContactQuery.prototype.wait = 0;
+
+    /**
+     * Creates a new CafeContactQuery instance using the specified properties.
+     * @function create
+     * @memberof CafeContactQuery
+     * @static
+     * @param {ICafeContactQuery=} [properties] Properties to set
+     * @returns {CafeContactQuery} CafeContactQuery instance
+     */
+    CafeContactQuery.create = function create(properties) {
+        return new CafeContactQuery(properties);
+    };
+
+    /**
+     * Encodes the specified CafeContactQuery message. Does not implicitly {@link CafeContactQuery.verify|verify} messages.
+     * @function encode
+     * @memberof CafeContactQuery
+     * @static
+     * @param {ICafeContactQuery} message CafeContactQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeContactQuery.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.token != null && message.hasOwnProperty("token"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.token);
+        if (message.findId != null && message.hasOwnProperty("findId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.findId);
+        if (message.findAddress != null && message.hasOwnProperty("findAddress"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.findAddress);
+        if (message.findUsername != null && message.hasOwnProperty("findUsername"))
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.findUsername);
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.limit);
+        if (message.wait != null && message.hasOwnProperty("wait"))
+            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.wait);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafeContactQuery message, length delimited. Does not implicitly {@link CafeContactQuery.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafeContactQuery
+     * @static
+     * @param {ICafeContactQuery} message CafeContactQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeContactQuery.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafeContactQuery message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafeContactQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafeContactQuery} CafeContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeContactQuery.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafeContactQuery();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.token = reader.string();
+                break;
+            case 2:
+                message.findId = reader.string();
+                break;
+            case 3:
+                message.findAddress = reader.string();
+                break;
+            case 4:
+                message.findUsername = reader.string();
+                break;
+            case 5:
+                message.limit = reader.int32();
+                break;
+            case 6:
+                message.wait = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafeContactQuery message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafeContactQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafeContactQuery} CafeContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeContactQuery.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafeContactQuery message.
+     * @function verify
+     * @memberof CafeContactQuery
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafeContactQuery.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.token != null && message.hasOwnProperty("token"))
+            if (!$util.isString(message.token))
+                return "token: string expected";
+        if (message.findId != null && message.hasOwnProperty("findId"))
+            if (!$util.isString(message.findId))
+                return "findId: string expected";
+        if (message.findAddress != null && message.hasOwnProperty("findAddress"))
+            if (!$util.isString(message.findAddress))
+                return "findAddress: string expected";
+        if (message.findUsername != null && message.hasOwnProperty("findUsername"))
+            if (!$util.isString(message.findUsername))
+                return "findUsername: string expected";
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            if (!$util.isInteger(message.limit))
+                return "limit: integer expected";
+        if (message.wait != null && message.hasOwnProperty("wait"))
+            if (!$util.isInteger(message.wait))
+                return "wait: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a CafeContactQuery message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafeContactQuery
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafeContactQuery} CafeContactQuery
+     */
+    CafeContactQuery.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafeContactQuery)
+            return object;
+        let message = new $root.CafeContactQuery();
+        if (object.token != null)
+            message.token = String(object.token);
+        if (object.findId != null)
+            message.findId = String(object.findId);
+        if (object.findAddress != null)
+            message.findAddress = String(object.findAddress);
+        if (object.findUsername != null)
+            message.findUsername = String(object.findUsername);
+        if (object.limit != null)
+            message.limit = object.limit | 0;
+        if (object.wait != null)
+            message.wait = object.wait | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafeContactQuery message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafeContactQuery
+     * @static
+     * @param {CafeContactQuery} message CafeContactQuery
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafeContactQuery.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.token = "";
+            object.findId = "";
+            object.findAddress = "";
+            object.findUsername = "";
+            object.limit = 0;
+            object.wait = 0;
+        }
+        if (message.token != null && message.hasOwnProperty("token"))
+            object.token = message.token;
+        if (message.findId != null && message.hasOwnProperty("findId"))
+            object.findId = message.findId;
+        if (message.findAddress != null && message.hasOwnProperty("findAddress"))
+            object.findAddress = message.findAddress;
+        if (message.findUsername != null && message.hasOwnProperty("findUsername"))
+            object.findUsername = message.findUsername;
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            object.limit = message.limit;
+        if (message.wait != null && message.hasOwnProperty("wait"))
+            object.wait = message.wait;
+        return object;
+    };
+
+    /**
+     * Converts this CafeContactQuery to JSON.
+     * @function toJSON
+     * @memberof CafeContactQuery
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafeContactQuery.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafeContactQuery;
+})();
+
+export const CafeContactQueryResult = $root.CafeContactQueryResult = (() => {
+
+    /**
+     * Properties of a CafeContactQueryResult.
+     * @exports ICafeContactQueryResult
+     * @interface ICafeContactQueryResult
+     * @property {Array.<IContact>|null} [contacts] CafeContactQueryResult contacts
+     */
+
+    /**
+     * Constructs a new CafeContactQueryResult.
+     * @exports CafeContactQueryResult
+     * @classdesc Represents a CafeContactQueryResult.
+     * @implements ICafeContactQueryResult
+     * @constructor
+     * @param {ICafeContactQueryResult=} [properties] Properties to set
+     */
+    function CafeContactQueryResult(properties) {
+        this.contacts = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafeContactQueryResult contacts.
+     * @member {Array.<IContact>} contacts
+     * @memberof CafeContactQueryResult
+     * @instance
+     */
+    CafeContactQueryResult.prototype.contacts = $util.emptyArray;
+
+    /**
+     * Creates a new CafeContactQueryResult instance using the specified properties.
+     * @function create
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {ICafeContactQueryResult=} [properties] Properties to set
+     * @returns {CafeContactQueryResult} CafeContactQueryResult instance
+     */
+    CafeContactQueryResult.create = function create(properties) {
+        return new CafeContactQueryResult(properties);
+    };
+
+    /**
+     * Encodes the specified CafeContactQueryResult message. Does not implicitly {@link CafeContactQueryResult.verify|verify} messages.
+     * @function encode
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {ICafeContactQueryResult} message CafeContactQueryResult message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeContactQueryResult.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.contacts != null && message.contacts.length)
+            for (let i = 0; i < message.contacts.length; ++i)
+                $root.Contact.encode(message.contacts[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafeContactQueryResult message, length delimited. Does not implicitly {@link CafeContactQueryResult.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {ICafeContactQueryResult} message CafeContactQueryResult message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeContactQueryResult.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafeContactQueryResult message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafeContactQueryResult} CafeContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeContactQueryResult.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafeContactQueryResult();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.contacts && message.contacts.length))
+                    message.contacts = [];
+                message.contacts.push($root.Contact.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafeContactQueryResult message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafeContactQueryResult} CafeContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeContactQueryResult.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafeContactQueryResult message.
+     * @function verify
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafeContactQueryResult.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.contacts != null && message.hasOwnProperty("contacts")) {
+            if (!Array.isArray(message.contacts))
+                return "contacts: array expected";
+            for (let i = 0; i < message.contacts.length; ++i) {
+                let error = $root.Contact.verify(message.contacts[i]);
+                if (error)
+                    return "contacts." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a CafeContactQueryResult message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafeContactQueryResult} CafeContactQueryResult
+     */
+    CafeContactQueryResult.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafeContactQueryResult)
+            return object;
+        let message = new $root.CafeContactQueryResult();
+        if (object.contacts) {
+            if (!Array.isArray(object.contacts))
+                throw TypeError(".CafeContactQueryResult.contacts: array expected");
+            message.contacts = [];
+            for (let i = 0; i < object.contacts.length; ++i) {
+                if (typeof object.contacts[i] !== "object")
+                    throw TypeError(".CafeContactQueryResult.contacts: object expected");
+                message.contacts[i] = $root.Contact.fromObject(object.contacts[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafeContactQueryResult message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafeContactQueryResult
+     * @static
+     * @param {CafeContactQueryResult} message CafeContactQueryResult
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafeContactQueryResult.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.contacts = [];
+        if (message.contacts && message.contacts.length) {
+            object.contacts = [];
+            for (let j = 0; j < message.contacts.length; ++j)
+                object.contacts[j] = $root.Contact.toObject(message.contacts[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this CafeContactQueryResult to JSON.
+     * @function toJSON
+     * @memberof CafeContactQueryResult
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafeContactQueryResult.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafeContactQueryResult;
 })();
 
 export const CafeStore = $root.CafeStore = (() => {
@@ -5028,6 +6144,540 @@ export const Cafe = $root.Cafe = (() => {
     return Cafe;
 })();
 
+export const CafePubSubContactQuery = $root.CafePubSubContactQuery = (() => {
+
+    /**
+     * Properties of a CafePubSubContactQuery.
+     * @exports ICafePubSubContactQuery
+     * @interface ICafePubSubContactQuery
+     * @property {string|null} [id] CafePubSubContactQuery id
+     * @property {string|null} [findId] CafePubSubContactQuery findId
+     * @property {string|null} [findAddress] CafePubSubContactQuery findAddress
+     * @property {string|null} [findUsername] CafePubSubContactQuery findUsername
+     * @property {CafePubSubContactQuery.ResponseType|null} [responseType] CafePubSubContactQuery responseType
+     */
+
+    /**
+     * Constructs a new CafePubSubContactQuery.
+     * @exports CafePubSubContactQuery
+     * @classdesc Represents a CafePubSubContactQuery.
+     * @implements ICafePubSubContactQuery
+     * @constructor
+     * @param {ICafePubSubContactQuery=} [properties] Properties to set
+     */
+    function CafePubSubContactQuery(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafePubSubContactQuery id.
+     * @member {string} id
+     * @memberof CafePubSubContactQuery
+     * @instance
+     */
+    CafePubSubContactQuery.prototype.id = "";
+
+    /**
+     * CafePubSubContactQuery findId.
+     * @member {string} findId
+     * @memberof CafePubSubContactQuery
+     * @instance
+     */
+    CafePubSubContactQuery.prototype.findId = "";
+
+    /**
+     * CafePubSubContactQuery findAddress.
+     * @member {string} findAddress
+     * @memberof CafePubSubContactQuery
+     * @instance
+     */
+    CafePubSubContactQuery.prototype.findAddress = "";
+
+    /**
+     * CafePubSubContactQuery findUsername.
+     * @member {string} findUsername
+     * @memberof CafePubSubContactQuery
+     * @instance
+     */
+    CafePubSubContactQuery.prototype.findUsername = "";
+
+    /**
+     * CafePubSubContactQuery responseType.
+     * @member {CafePubSubContactQuery.ResponseType} responseType
+     * @memberof CafePubSubContactQuery
+     * @instance
+     */
+    CafePubSubContactQuery.prototype.responseType = 0;
+
+    /**
+     * Creates a new CafePubSubContactQuery instance using the specified properties.
+     * @function create
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {ICafePubSubContactQuery=} [properties] Properties to set
+     * @returns {CafePubSubContactQuery} CafePubSubContactQuery instance
+     */
+    CafePubSubContactQuery.create = function create(properties) {
+        return new CafePubSubContactQuery(properties);
+    };
+
+    /**
+     * Encodes the specified CafePubSubContactQuery message. Does not implicitly {@link CafePubSubContactQuery.verify|verify} messages.
+     * @function encode
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {ICafePubSubContactQuery} message CafePubSubContactQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePubSubContactQuery.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.findId != null && message.hasOwnProperty("findId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.findId);
+        if (message.findAddress != null && message.hasOwnProperty("findAddress"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.findAddress);
+        if (message.findUsername != null && message.hasOwnProperty("findUsername"))
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.findUsername);
+        if (message.responseType != null && message.hasOwnProperty("responseType"))
+            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.responseType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafePubSubContactQuery message, length delimited. Does not implicitly {@link CafePubSubContactQuery.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {ICafePubSubContactQuery} message CafePubSubContactQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePubSubContactQuery.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafePubSubContactQuery message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafePubSubContactQuery} CafePubSubContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePubSubContactQuery.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafePubSubContactQuery();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.findId = reader.string();
+                break;
+            case 3:
+                message.findAddress = reader.string();
+                break;
+            case 4:
+                message.findUsername = reader.string();
+                break;
+            case 5:
+                message.responseType = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafePubSubContactQuery message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafePubSubContactQuery} CafePubSubContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePubSubContactQuery.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafePubSubContactQuery message.
+     * @function verify
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafePubSubContactQuery.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.findId != null && message.hasOwnProperty("findId"))
+            if (!$util.isString(message.findId))
+                return "findId: string expected";
+        if (message.findAddress != null && message.hasOwnProperty("findAddress"))
+            if (!$util.isString(message.findAddress))
+                return "findAddress: string expected";
+        if (message.findUsername != null && message.hasOwnProperty("findUsername"))
+            if (!$util.isString(message.findUsername))
+                return "findUsername: string expected";
+        if (message.responseType != null && message.hasOwnProperty("responseType"))
+            switch (message.responseType) {
+            default:
+                return "responseType: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a CafePubSubContactQuery message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafePubSubContactQuery} CafePubSubContactQuery
+     */
+    CafePubSubContactQuery.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafePubSubContactQuery)
+            return object;
+        let message = new $root.CafePubSubContactQuery();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.findId != null)
+            message.findId = String(object.findId);
+        if (object.findAddress != null)
+            message.findAddress = String(object.findAddress);
+        if (object.findUsername != null)
+            message.findUsername = String(object.findUsername);
+        switch (object.responseType) {
+        case "P2P":
+        case 0:
+            message.responseType = 0;
+            break;
+        case "PUBSUB":
+        case 1:
+            message.responseType = 1;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafePubSubContactQuery message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafePubSubContactQuery
+     * @static
+     * @param {CafePubSubContactQuery} message CafePubSubContactQuery
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafePubSubContactQuery.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.findId = "";
+            object.findAddress = "";
+            object.findUsername = "";
+            object.responseType = options.enums === String ? "P2P" : 0;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.findId != null && message.hasOwnProperty("findId"))
+            object.findId = message.findId;
+        if (message.findAddress != null && message.hasOwnProperty("findAddress"))
+            object.findAddress = message.findAddress;
+        if (message.findUsername != null && message.hasOwnProperty("findUsername"))
+            object.findUsername = message.findUsername;
+        if (message.responseType != null && message.hasOwnProperty("responseType"))
+            object.responseType = options.enums === String ? $root.CafePubSubContactQuery.ResponseType[message.responseType] : message.responseType;
+        return object;
+    };
+
+    /**
+     * Converts this CafePubSubContactQuery to JSON.
+     * @function toJSON
+     * @memberof CafePubSubContactQuery
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafePubSubContactQuery.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * ResponseType enum.
+     * @name CafePubSubContactQuery.ResponseType
+     * @enum {string}
+     * @property {number} P2P=0 P2P value
+     * @property {number} PUBSUB=1 PUBSUB value
+     */
+    CafePubSubContactQuery.ResponseType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "P2P"] = 0;
+        values[valuesById[1] = "PUBSUB"] = 1;
+        return values;
+    })();
+
+    return CafePubSubContactQuery;
+})();
+
+export const CafePubSubContactQueryResult = $root.CafePubSubContactQueryResult = (() => {
+
+    /**
+     * Properties of a CafePubSubContactQueryResult.
+     * @exports ICafePubSubContactQueryResult
+     * @interface ICafePubSubContactQueryResult
+     * @property {string|null} [id] CafePubSubContactQueryResult id
+     * @property {Array.<IContact>|null} [contacts] CafePubSubContactQueryResult contacts
+     */
+
+    /**
+     * Constructs a new CafePubSubContactQueryResult.
+     * @exports CafePubSubContactQueryResult
+     * @classdesc Represents a CafePubSubContactQueryResult.
+     * @implements ICafePubSubContactQueryResult
+     * @constructor
+     * @param {ICafePubSubContactQueryResult=} [properties] Properties to set
+     */
+    function CafePubSubContactQueryResult(properties) {
+        this.contacts = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafePubSubContactQueryResult id.
+     * @member {string} id
+     * @memberof CafePubSubContactQueryResult
+     * @instance
+     */
+    CafePubSubContactQueryResult.prototype.id = "";
+
+    /**
+     * CafePubSubContactQueryResult contacts.
+     * @member {Array.<IContact>} contacts
+     * @memberof CafePubSubContactQueryResult
+     * @instance
+     */
+    CafePubSubContactQueryResult.prototype.contacts = $util.emptyArray;
+
+    /**
+     * Creates a new CafePubSubContactQueryResult instance using the specified properties.
+     * @function create
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {ICafePubSubContactQueryResult=} [properties] Properties to set
+     * @returns {CafePubSubContactQueryResult} CafePubSubContactQueryResult instance
+     */
+    CafePubSubContactQueryResult.create = function create(properties) {
+        return new CafePubSubContactQueryResult(properties);
+    };
+
+    /**
+     * Encodes the specified CafePubSubContactQueryResult message. Does not implicitly {@link CafePubSubContactQueryResult.verify|verify} messages.
+     * @function encode
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {ICafePubSubContactQueryResult} message CafePubSubContactQueryResult message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePubSubContactQueryResult.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.contacts != null && message.contacts.length)
+            for (let i = 0; i < message.contacts.length; ++i)
+                $root.Contact.encode(message.contacts[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafePubSubContactQueryResult message, length delimited. Does not implicitly {@link CafePubSubContactQueryResult.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {ICafePubSubContactQueryResult} message CafePubSubContactQueryResult message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafePubSubContactQueryResult.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafePubSubContactQueryResult message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafePubSubContactQueryResult} CafePubSubContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePubSubContactQueryResult.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafePubSubContactQueryResult();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                if (!(message.contacts && message.contacts.length))
+                    message.contacts = [];
+                message.contacts.push($root.Contact.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafePubSubContactQueryResult message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafePubSubContactQueryResult} CafePubSubContactQueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafePubSubContactQueryResult.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafePubSubContactQueryResult message.
+     * @function verify
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafePubSubContactQueryResult.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.contacts != null && message.hasOwnProperty("contacts")) {
+            if (!Array.isArray(message.contacts))
+                return "contacts: array expected";
+            for (let i = 0; i < message.contacts.length; ++i) {
+                let error = $root.Contact.verify(message.contacts[i]);
+                if (error)
+                    return "contacts." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a CafePubSubContactQueryResult message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafePubSubContactQueryResult} CafePubSubContactQueryResult
+     */
+    CafePubSubContactQueryResult.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafePubSubContactQueryResult)
+            return object;
+        let message = new $root.CafePubSubContactQueryResult();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.contacts) {
+            if (!Array.isArray(object.contacts))
+                throw TypeError(".CafePubSubContactQueryResult.contacts: array expected");
+            message.contacts = [];
+            for (let i = 0; i < object.contacts.length; ++i) {
+                if (typeof object.contacts[i] !== "object")
+                    throw TypeError(".CafePubSubContactQueryResult.contacts: object expected");
+                message.contacts[i] = $root.Contact.fromObject(object.contacts[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafePubSubContactQueryResult message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafePubSubContactQueryResult
+     * @static
+     * @param {CafePubSubContactQueryResult} message CafePubSubContactQueryResult
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafePubSubContactQueryResult.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.contacts = [];
+        if (options.defaults)
+            object.id = "";
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.contacts && message.contacts.length) {
+            object.contacts = [];
+            for (let j = 0; j < message.contacts.length; ++j)
+                object.contacts[j] = $root.Contact.toObject(message.contacts[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this CafePubSubContactQueryResult to JSON.
+     * @function toJSON
+     * @memberof CafePubSubContactQueryResult
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafePubSubContactQueryResult.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafePubSubContactQueryResult;
+})();
+
 export const Message = $root.Message = (() => {
 
     /**
@@ -5223,6 +6873,12 @@ export const Message = $root.Message = (() => {
             case 63:
             case 64:
             case 65:
+            case 66:
+            case 67:
+            case 68:
+            case 69:
+            case 100:
+            case 101:
             case 500:
                 break;
             }
@@ -5329,6 +6985,30 @@ export const Message = $root.Message = (() => {
         case 65:
             message.type = 65;
             break;
+        case "CAFE_PUBLISH_CONTACT":
+        case 66:
+            message.type = 66;
+            break;
+        case "CAFE_PUBLISH_CONTACT_ACK":
+        case 67:
+            message.type = 67;
+            break;
+        case "CAFE_CONTACT_QUERY":
+        case 68:
+            message.type = 68;
+            break;
+        case "CAFE_CONTACT_QUERY_RES":
+        case 69:
+            message.type = 69;
+            break;
+        case "CAFE_PUBSUB_CONTACT_QUERY":
+        case 100:
+            message.type = 100;
+            break;
+        case "CAFE_PUBSUB_CONTACT_QUERY_RES":
+        case 101:
+            message.type = 101;
+            break;
         case "ERROR":
         case 500:
             message.type = 500;
@@ -5410,6 +7090,12 @@ export const Message = $root.Message = (() => {
      * @property {number} CAFE_DELETE_MESSAGES=63 CAFE_DELETE_MESSAGES value
      * @property {number} CAFE_DELETE_MESSAGES_ACK=64 CAFE_DELETE_MESSAGES_ACK value
      * @property {number} CAFE_YOU_HAVE_MAIL=65 CAFE_YOU_HAVE_MAIL value
+     * @property {number} CAFE_PUBLISH_CONTACT=66 CAFE_PUBLISH_CONTACT value
+     * @property {number} CAFE_PUBLISH_CONTACT_ACK=67 CAFE_PUBLISH_CONTACT_ACK value
+     * @property {number} CAFE_CONTACT_QUERY=68 CAFE_CONTACT_QUERY value
+     * @property {number} CAFE_CONTACT_QUERY_RES=69 CAFE_CONTACT_QUERY_RES value
+     * @property {number} CAFE_PUBSUB_CONTACT_QUERY=100 CAFE_PUBSUB_CONTACT_QUERY value
+     * @property {number} CAFE_PUBSUB_CONTACT_QUERY_RES=101 CAFE_PUBSUB_CONTACT_QUERY_RES value
      * @property {number} ERROR=500 ERROR value
      */
     Message.Type = (function() {
@@ -5433,6 +7119,12 @@ export const Message = $root.Message = (() => {
         values[valuesById[63] = "CAFE_DELETE_MESSAGES"] = 63;
         values[valuesById[64] = "CAFE_DELETE_MESSAGES_ACK"] = 64;
         values[valuesById[65] = "CAFE_YOU_HAVE_MAIL"] = 65;
+        values[valuesById[66] = "CAFE_PUBLISH_CONTACT"] = 66;
+        values[valuesById[67] = "CAFE_PUBLISH_CONTACT_ACK"] = 67;
+        values[valuesById[68] = "CAFE_CONTACT_QUERY"] = 68;
+        values[valuesById[69] = "CAFE_CONTACT_QUERY_RES"] = 69;
+        values[valuesById[100] = "CAFE_PUBSUB_CONTACT_QUERY"] = 100;
+        values[valuesById[101] = "CAFE_PUBSUB_CONTACT_QUERY_RES"] = 101;
         values[valuesById[500] = "ERROR"] = 500;
         return values;
     })();
@@ -8000,6 +9692,10 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
      * @property {string|null} [name] ThreadInvite name
      * @property {string|null} [schema] ThreadInvite schema
      * @property {string|null} [initiator] ThreadInvite initiator
+     * @property {IContact|null} [contact] ThreadInvite contact
+     * @property {number|null} [type] ThreadInvite type
+     * @property {number|null} [sharing] ThreadInvite sharing
+     * @property {Array.<string>|null} [members] ThreadInvite members
      */
 
     /**
@@ -8011,6 +9707,7 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
      * @param {IThreadInvite=} [properties] Properties to set
      */
     function ThreadInvite(properties) {
+        this.members = [];
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -8050,6 +9747,38 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
     ThreadInvite.prototype.initiator = "";
 
     /**
+     * ThreadInvite contact.
+     * @member {IContact|null|undefined} contact
+     * @memberof ThreadInvite
+     * @instance
+     */
+    ThreadInvite.prototype.contact = null;
+
+    /**
+     * ThreadInvite type.
+     * @member {number} type
+     * @memberof ThreadInvite
+     * @instance
+     */
+    ThreadInvite.prototype.type = 0;
+
+    /**
+     * ThreadInvite sharing.
+     * @member {number} sharing
+     * @memberof ThreadInvite
+     * @instance
+     */
+    ThreadInvite.prototype.sharing = 0;
+
+    /**
+     * ThreadInvite members.
+     * @member {Array.<string>} members
+     * @memberof ThreadInvite
+     * @instance
+     */
+    ThreadInvite.prototype.members = $util.emptyArray;
+
+    /**
      * Creates a new ThreadInvite instance using the specified properties.
      * @function create
      * @memberof ThreadInvite
@@ -8081,6 +9810,15 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.schema);
         if (message.initiator != null && message.hasOwnProperty("initiator"))
             writer.uint32(/* id 4, wireType 2 =*/34).string(message.initiator);
+        if (message.contact != null && message.hasOwnProperty("contact"))
+            $root.Contact.encode(message.contact, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.type);
+        if (message.sharing != null && message.hasOwnProperty("sharing"))
+            writer.uint32(/* id 7, wireType 0 =*/56).int32(message.sharing);
+        if (message.members != null && message.members.length)
+            for (let i = 0; i < message.members.length; ++i)
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.members[i]);
         return writer;
     };
 
@@ -8126,6 +9864,20 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
                 break;
             case 4:
                 message.initiator = reader.string();
+                break;
+            case 5:
+                message.contact = $root.Contact.decode(reader, reader.uint32());
+                break;
+            case 6:
+                message.type = reader.int32();
+                break;
+            case 7:
+                message.sharing = reader.int32();
+                break;
+            case 8:
+                if (!(message.members && message.members.length))
+                    message.members = [];
+                message.members.push(reader.string());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -8174,6 +9926,24 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
         if (message.initiator != null && message.hasOwnProperty("initiator"))
             if (!$util.isString(message.initiator))
                 return "initiator: string expected";
+        if (message.contact != null && message.hasOwnProperty("contact")) {
+            let error = $root.Contact.verify(message.contact);
+            if (error)
+                return "contact." + error;
+        }
+        if (message.type != null && message.hasOwnProperty("type"))
+            if (!$util.isInteger(message.type))
+                return "type: integer expected";
+        if (message.sharing != null && message.hasOwnProperty("sharing"))
+            if (!$util.isInteger(message.sharing))
+                return "sharing: integer expected";
+        if (message.members != null && message.hasOwnProperty("members")) {
+            if (!Array.isArray(message.members))
+                return "members: array expected";
+            for (let i = 0; i < message.members.length; ++i)
+                if (!$util.isString(message.members[i]))
+                    return "members: string[] expected";
+        }
         return null;
     };
 
@@ -8200,6 +9970,22 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
             message.schema = String(object.schema);
         if (object.initiator != null)
             message.initiator = String(object.initiator);
+        if (object.contact != null) {
+            if (typeof object.contact !== "object")
+                throw TypeError(".ThreadInvite.contact: object expected");
+            message.contact = $root.Contact.fromObject(object.contact);
+        }
+        if (object.type != null)
+            message.type = object.type | 0;
+        if (object.sharing != null)
+            message.sharing = object.sharing | 0;
+        if (object.members) {
+            if (!Array.isArray(object.members))
+                throw TypeError(".ThreadInvite.members: array expected");
+            message.members = [];
+            for (let i = 0; i < object.members.length; ++i)
+                message.members[i] = String(object.members[i]);
+        }
         return message;
     };
 
@@ -8216,6 +10002,8 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
         if (!options)
             options = {};
         let object = {};
+        if (options.arrays || options.defaults)
+            object.members = [];
         if (options.defaults) {
             if (options.bytes === String)
                 object.sk = "";
@@ -8227,6 +10015,9 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
             object.name = "";
             object.schema = "";
             object.initiator = "";
+            object.contact = null;
+            object.type = 0;
+            object.sharing = 0;
         }
         if (message.sk != null && message.hasOwnProperty("sk"))
             object.sk = options.bytes === String ? $util.base64.encode(message.sk, 0, message.sk.length) : options.bytes === Array ? Array.prototype.slice.call(message.sk) : message.sk;
@@ -8236,6 +10027,17 @@ export const ThreadInvite = $root.ThreadInvite = (() => {
             object.schema = message.schema;
         if (message.initiator != null && message.hasOwnProperty("initiator"))
             object.initiator = message.initiator;
+        if (message.contact != null && message.hasOwnProperty("contact"))
+            object.contact = $root.Contact.toObject(message.contact, options);
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = message.type;
+        if (message.sharing != null && message.hasOwnProperty("sharing"))
+            object.sharing = message.sharing;
+        if (message.members && message.members.length) {
+            object.members = [];
+            for (let j = 0; j < message.members.length; ++j)
+                object.members[j] = message.members[j];
+        }
         return object;
     };
 
