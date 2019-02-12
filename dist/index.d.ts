@@ -193,6 +193,9 @@ export interface ICafeRegistration {
 
     /** CafeRegistration sig */
     sig?: (Uint8Array|null);
+
+    /** CafeRegistration token */
+    token?: (string|null);
 }
 
 /** Represents a CafeRegistration. */
@@ -215,6 +218,9 @@ export class CafeRegistration implements ICafeRegistration {
 
     /** CafeRegistration sig. */
     public sig: Uint8Array;
+
+    /** CafeRegistration token. */
+    public token: string;
 
     /**
      * Creates a new CafeRegistration instance using the specified properties.
@@ -1416,13 +1422,19 @@ export interface ICafeThread {
     initiator?: (string|null);
 
     /** CafeThread type */
-    type?: (number|null);
+    type?: (CafeThread.Type|null);
 
     /** CafeThread state */
-    state?: (number|null);
+    state?: (CafeThread.State|null);
 
     /** CafeThread head */
     head?: (string|null);
+
+    /** CafeThread sharing */
+    sharing?: (CafeThread.Sharing|null);
+
+    /** CafeThread members */
+    members?: (string[]|null);
 }
 
 /** Represents a CafeThread. */
@@ -1450,13 +1462,19 @@ export class CafeThread implements ICafeThread {
     public initiator: string;
 
     /** CafeThread type. */
-    public type: number;
+    public type: CafeThread.Type;
 
     /** CafeThread state. */
-    public state: number;
+    public state: CafeThread.State;
 
     /** CafeThread head. */
     public head: string;
+
+    /** CafeThread sharing. */
+    public sharing: CafeThread.Sharing;
+
+    /** CafeThread members. */
+    public members: string[];
 
     /**
      * Creates a new CafeThread instance using the specified properties.
@@ -1524,6 +1542,133 @@ export class CafeThread implements ICafeThread {
 
     /**
      * Converts this CafeThread to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+export namespace CafeThread {
+
+    /** Type enum. */
+    enum Type {
+        Private = 0,
+        ReadOnly = 1,
+        Public = 2,
+        Open = 3
+    }
+
+    /** Sharing enum. */
+    enum Sharing {
+        NotShared = 0,
+        InviteOnly = 1,
+        Shared = 2
+    }
+
+    /** State enum. */
+    enum State {
+        LoadingBehind = 0,
+        Loaded = 1,
+        LoadingAhead = 2
+    }
+}
+
+/** Properties of a CafeClientThread. */
+export interface ICafeClientThread {
+
+    /** CafeClientThread id */
+    id?: (string|null);
+
+    /** CafeClientThread clientId */
+    clientId?: (string|null);
+
+    /** CafeClientThread ciphertext */
+    ciphertext?: (Uint8Array|null);
+}
+
+/** Represents a CafeClientThread. */
+export class CafeClientThread implements ICafeClientThread {
+
+    /**
+     * Constructs a new CafeClientThread.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICafeClientThread);
+
+    /** CafeClientThread id. */
+    public id: string;
+
+    /** CafeClientThread clientId. */
+    public clientId: string;
+
+    /** CafeClientThread ciphertext. */
+    public ciphertext: Uint8Array;
+
+    /**
+     * Creates a new CafeClientThread instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CafeClientThread instance
+     */
+    public static create(properties?: ICafeClientThread): CafeClientThread;
+
+    /**
+     * Encodes the specified CafeClientThread message. Does not implicitly {@link CafeClientThread.verify|verify} messages.
+     * @param message CafeClientThread message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICafeClientThread, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CafeClientThread message, length delimited. Does not implicitly {@link CafeClientThread.verify|verify} messages.
+     * @param message CafeClientThread message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICafeClientThread, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CafeClientThread message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CafeClientThread
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CafeClientThread;
+
+    /**
+     * Decodes a CafeClientThread message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CafeClientThread
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CafeClientThread;
+
+    /**
+     * Verifies a CafeClientThread message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CafeClientThread message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CafeClientThread
+     */
+    public static fromObject(object: { [k: string]: any }): CafeClientThread;
+
+    /**
+     * Creates a plain object from a CafeClientThread message. Also converts values to other types if specified.
+     * @param message CafeClientThread
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CafeClientThread, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CafeClientThread to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
@@ -2931,11 +3076,15 @@ export namespace Message {
         CAFE_YOU_HAVE_MAIL = 65,
         CAFE_PUBLISH_CONTACT = 66,
         CAFE_PUBLISH_CONTACT_ACK = 67,
+        CAFE_QUERY = 70,
+        CAFE_QUERY_RES = 71,
+        CAFE_PUBSUB_QUERY = 102,
+        CAFE_PUBSUB_QUERY_RES = 103,
+        ERROR = 500,
         CAFE_CONTACT_QUERY = 68,
         CAFE_CONTACT_QUERY_RES = 69,
         CAFE_PUBSUB_CONTACT_QUERY = 100,
-        CAFE_PUBSUB_CONTACT_QUERY_RES = 101,
-        ERROR = 500
+        CAFE_PUBSUB_CONTACT_QUERY_RES = 101
     }
 }
 
@@ -3637,6 +3786,951 @@ export namespace google {
             public toJSON(): { [k: string]: any };
         }
     }
+}
+
+/** QueryType enum. */
+export enum QueryType {
+    THREAD_BACKUPS = 0,
+    CONTACTS = 1
+}
+
+/** Properties of a QueryOptions. */
+export interface IQueryOptions {
+
+    /** QueryOptions local */
+    local?: (boolean|null);
+
+    /** QueryOptions limit */
+    limit?: (number|null);
+
+    /** QueryOptions wait */
+    wait?: (number|null);
+
+    /** QueryOptions filter */
+    filter?: (QueryOptions.FilterType|null);
+}
+
+/** Represents a QueryOptions. */
+export class QueryOptions implements IQueryOptions {
+
+    /**
+     * Constructs a new QueryOptions.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IQueryOptions);
+
+    /** QueryOptions local. */
+    public local: boolean;
+
+    /** QueryOptions limit. */
+    public limit: number;
+
+    /** QueryOptions wait. */
+    public wait: number;
+
+    /** QueryOptions filter. */
+    public filter: QueryOptions.FilterType;
+
+    /**
+     * Creates a new QueryOptions instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns QueryOptions instance
+     */
+    public static create(properties?: IQueryOptions): QueryOptions;
+
+    /**
+     * Encodes the specified QueryOptions message. Does not implicitly {@link QueryOptions.verify|verify} messages.
+     * @param message QueryOptions message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IQueryOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified QueryOptions message, length delimited. Does not implicitly {@link QueryOptions.verify|verify} messages.
+     * @param message QueryOptions message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IQueryOptions, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a QueryOptions message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns QueryOptions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): QueryOptions;
+
+    /**
+     * Decodes a QueryOptions message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns QueryOptions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): QueryOptions;
+
+    /**
+     * Verifies a QueryOptions message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a QueryOptions message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns QueryOptions
+     */
+    public static fromObject(object: { [k: string]: any }): QueryOptions;
+
+    /**
+     * Creates a plain object from a QueryOptions message. Also converts values to other types if specified.
+     * @param message QueryOptions
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: QueryOptions, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this QueryOptions to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+export namespace QueryOptions {
+
+    /** FilterType enum. */
+    enum FilterType {
+        NO_FILTER = 0,
+        HIDE_OLDER = 1
+    }
+}
+
+/** Properties of a Query. */
+export interface IQuery {
+
+    /** Query token */
+    token?: (string|null);
+
+    /** Query type */
+    type?: (QueryType|null);
+
+    /** Query options */
+    options?: (IQueryOptions|null);
+
+    /** Query payload */
+    payload?: (google.protobuf.IAny|null);
+}
+
+/** Represents a Query. */
+export class Query implements IQuery {
+
+    /**
+     * Constructs a new Query.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IQuery);
+
+    /** Query token. */
+    public token: string;
+
+    /** Query type. */
+    public type: QueryType;
+
+    /** Query options. */
+    public options?: (IQueryOptions|null);
+
+    /** Query payload. */
+    public payload?: (google.protobuf.IAny|null);
+
+    /**
+     * Creates a new Query instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns Query instance
+     */
+    public static create(properties?: IQuery): Query;
+
+    /**
+     * Encodes the specified Query message. Does not implicitly {@link Query.verify|verify} messages.
+     * @param message Query message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified Query message, length delimited. Does not implicitly {@link Query.verify|verify} messages.
+     * @param message Query message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a Query message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns Query
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Query;
+
+    /**
+     * Decodes a Query message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns Query
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Query;
+
+    /**
+     * Verifies a Query message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a Query message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns Query
+     */
+    public static fromObject(object: { [k: string]: any }): Query;
+
+    /**
+     * Creates a plain object from a Query message. Also converts values to other types if specified.
+     * @param message Query
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: Query, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this Query to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a PubSubQuery. */
+export interface IPubSubQuery {
+
+    /** PubSubQuery id */
+    id?: (string|null);
+
+    /** PubSubQuery type */
+    type?: (QueryType|null);
+
+    /** PubSubQuery payload */
+    payload?: (google.protobuf.IAny|null);
+
+    /** PubSubQuery responseType */
+    responseType?: (PubSubQuery.ResponseType|null);
+}
+
+/** Represents a PubSubQuery. */
+export class PubSubQuery implements IPubSubQuery {
+
+    /**
+     * Constructs a new PubSubQuery.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IPubSubQuery);
+
+    /** PubSubQuery id. */
+    public id: string;
+
+    /** PubSubQuery type. */
+    public type: QueryType;
+
+    /** PubSubQuery payload. */
+    public payload?: (google.protobuf.IAny|null);
+
+    /** PubSubQuery responseType. */
+    public responseType: PubSubQuery.ResponseType;
+
+    /**
+     * Creates a new PubSubQuery instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns PubSubQuery instance
+     */
+    public static create(properties?: IPubSubQuery): PubSubQuery;
+
+    /**
+     * Encodes the specified PubSubQuery message. Does not implicitly {@link PubSubQuery.verify|verify} messages.
+     * @param message PubSubQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IPubSubQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified PubSubQuery message, length delimited. Does not implicitly {@link PubSubQuery.verify|verify} messages.
+     * @param message PubSubQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IPubSubQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a PubSubQuery message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns PubSubQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): PubSubQuery;
+
+    /**
+     * Decodes a PubSubQuery message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns PubSubQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): PubSubQuery;
+
+    /**
+     * Verifies a PubSubQuery message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a PubSubQuery message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns PubSubQuery
+     */
+    public static fromObject(object: { [k: string]: any }): PubSubQuery;
+
+    /**
+     * Creates a plain object from a PubSubQuery message. Also converts values to other types if specified.
+     * @param message PubSubQuery
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: PubSubQuery, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this PubSubQuery to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+export namespace PubSubQuery {
+
+    /** ResponseType enum. */
+    enum ResponseType {
+        P2P = 0,
+        PUBSUB = 1
+    }
+}
+
+/** Properties of a QueryResult. */
+export interface IQueryResult {
+
+    /** QueryResult id */
+    id?: (string|null);
+
+    /** QueryResult date */
+    date?: (google.protobuf.ITimestamp|null);
+
+    /** QueryResult local */
+    local?: (boolean|null);
+
+    /** QueryResult value */
+    value?: (google.protobuf.IAny|null);
+}
+
+/** Represents a QueryResult. */
+export class QueryResult implements IQueryResult {
+
+    /**
+     * Constructs a new QueryResult.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IQueryResult);
+
+    /** QueryResult id. */
+    public id: string;
+
+    /** QueryResult date. */
+    public date?: (google.protobuf.ITimestamp|null);
+
+    /** QueryResult local. */
+    public local: boolean;
+
+    /** QueryResult value. */
+    public value?: (google.protobuf.IAny|null);
+
+    /**
+     * Creates a new QueryResult instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns QueryResult instance
+     */
+    public static create(properties?: IQueryResult): QueryResult;
+
+    /**
+     * Encodes the specified QueryResult message. Does not implicitly {@link QueryResult.verify|verify} messages.
+     * @param message QueryResult message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IQueryResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified QueryResult message, length delimited. Does not implicitly {@link QueryResult.verify|verify} messages.
+     * @param message QueryResult message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IQueryResult, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a QueryResult message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns QueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): QueryResult;
+
+    /**
+     * Decodes a QueryResult message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns QueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): QueryResult;
+
+    /**
+     * Verifies a QueryResult message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a QueryResult message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns QueryResult
+     */
+    public static fromObject(object: { [k: string]: any }): QueryResult;
+
+    /**
+     * Creates a plain object from a QueryResult message. Also converts values to other types if specified.
+     * @param message QueryResult
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: QueryResult, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this QueryResult to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a QueryResults. */
+export interface IQueryResults {
+
+    /** QueryResults type */
+    type?: (QueryType|null);
+
+    /** QueryResults items */
+    items?: (IQueryResult[]|null);
+}
+
+/** Represents a QueryResults. */
+export class QueryResults implements IQueryResults {
+
+    /**
+     * Constructs a new QueryResults.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IQueryResults);
+
+    /** QueryResults type. */
+    public type: QueryType;
+
+    /** QueryResults items. */
+    public items: IQueryResult[];
+
+    /**
+     * Creates a new QueryResults instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns QueryResults instance
+     */
+    public static create(properties?: IQueryResults): QueryResults;
+
+    /**
+     * Encodes the specified QueryResults message. Does not implicitly {@link QueryResults.verify|verify} messages.
+     * @param message QueryResults message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IQueryResults, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified QueryResults message, length delimited. Does not implicitly {@link QueryResults.verify|verify} messages.
+     * @param message QueryResults message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IQueryResults, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a QueryResults message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns QueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): QueryResults;
+
+    /**
+     * Decodes a QueryResults message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns QueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): QueryResults;
+
+    /**
+     * Verifies a QueryResults message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a QueryResults message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns QueryResults
+     */
+    public static fromObject(object: { [k: string]: any }): QueryResults;
+
+    /**
+     * Creates a plain object from a QueryResults message. Also converts values to other types if specified.
+     * @param message QueryResults
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: QueryResults, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this QueryResults to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a PubSubQueryResults. */
+export interface IPubSubQueryResults {
+
+    /** PubSubQueryResults id */
+    id?: (string|null);
+
+    /** PubSubQueryResults results */
+    results?: (IQueryResults|null);
+}
+
+/** Represents a PubSubQueryResults. */
+export class PubSubQueryResults implements IPubSubQueryResults {
+
+    /**
+     * Constructs a new PubSubQueryResults.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IPubSubQueryResults);
+
+    /** PubSubQueryResults id. */
+    public id: string;
+
+    /** PubSubQueryResults results. */
+    public results?: (IQueryResults|null);
+
+    /**
+     * Creates a new PubSubQueryResults instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns PubSubQueryResults instance
+     */
+    public static create(properties?: IPubSubQueryResults): PubSubQueryResults;
+
+    /**
+     * Encodes the specified PubSubQueryResults message. Does not implicitly {@link PubSubQueryResults.verify|verify} messages.
+     * @param message PubSubQueryResults message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IPubSubQueryResults, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified PubSubQueryResults message, length delimited. Does not implicitly {@link PubSubQueryResults.verify|verify} messages.
+     * @param message PubSubQueryResults message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IPubSubQueryResults, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a PubSubQueryResults message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns PubSubQueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): PubSubQueryResults;
+
+    /**
+     * Decodes a PubSubQueryResults message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns PubSubQueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): PubSubQueryResults;
+
+    /**
+     * Verifies a PubSubQueryResults message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a PubSubQueryResults message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns PubSubQueryResults
+     */
+    public static fromObject(object: { [k: string]: any }): PubSubQueryResults;
+
+    /**
+     * Creates a plain object from a PubSubQueryResults message. Also converts values to other types if specified.
+     * @param message PubSubQueryResults
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: PubSubQueryResults, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this PubSubQueryResults to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a QueryEvent. */
+export interface IQueryEvent {
+
+    /** QueryEvent type */
+    type?: (QueryEvent.Type|null);
+
+    /** QueryEvent data */
+    data?: (IQueryResult|null);
+}
+
+/** Represents a QueryEvent. */
+export class QueryEvent implements IQueryEvent {
+
+    /**
+     * Constructs a new QueryEvent.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IQueryEvent);
+
+    /** QueryEvent type. */
+    public type: QueryEvent.Type;
+
+    /** QueryEvent data. */
+    public data?: (IQueryResult|null);
+
+    /**
+     * Creates a new QueryEvent instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns QueryEvent instance
+     */
+    public static create(properties?: IQueryEvent): QueryEvent;
+
+    /**
+     * Encodes the specified QueryEvent message. Does not implicitly {@link QueryEvent.verify|verify} messages.
+     * @param message QueryEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IQueryEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified QueryEvent message, length delimited. Does not implicitly {@link QueryEvent.verify|verify} messages.
+     * @param message QueryEvent message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IQueryEvent, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a QueryEvent message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns QueryEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): QueryEvent;
+
+    /**
+     * Decodes a QueryEvent message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns QueryEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): QueryEvent;
+
+    /**
+     * Verifies a QueryEvent message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a QueryEvent message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns QueryEvent
+     */
+    public static fromObject(object: { [k: string]: any }): QueryEvent;
+
+    /**
+     * Creates a plain object from a QueryEvent message. Also converts values to other types if specified.
+     * @param message QueryEvent
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: QueryEvent, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this QueryEvent to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+export namespace QueryEvent {
+
+    /** Type enum. */
+    enum Type {
+        DATA = 0,
+        DONE = 1
+    }
+}
+
+/** Properties of a ContactQuery. */
+export interface IContactQuery {
+
+    /** ContactQuery id */
+    id?: (string|null);
+
+    /** ContactQuery address */
+    address?: (string|null);
+
+    /** ContactQuery username */
+    username?: (string|null);
+}
+
+/** Represents a ContactQuery. */
+export class ContactQuery implements IContactQuery {
+
+    /**
+     * Constructs a new ContactQuery.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IContactQuery);
+
+    /** ContactQuery id. */
+    public id: string;
+
+    /** ContactQuery address. */
+    public address: string;
+
+    /** ContactQuery username. */
+    public username: string;
+
+    /**
+     * Creates a new ContactQuery instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ContactQuery instance
+     */
+    public static create(properties?: IContactQuery): ContactQuery;
+
+    /**
+     * Encodes the specified ContactQuery message. Does not implicitly {@link ContactQuery.verify|verify} messages.
+     * @param message ContactQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IContactQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ContactQuery message, length delimited. Does not implicitly {@link ContactQuery.verify|verify} messages.
+     * @param message ContactQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IContactQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ContactQuery message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ContactQuery;
+
+    /**
+     * Decodes a ContactQuery message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ContactQuery;
+
+    /**
+     * Verifies a ContactQuery message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ContactQuery message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ContactQuery
+     */
+    public static fromObject(object: { [k: string]: any }): ContactQuery;
+
+    /**
+     * Creates a plain object from a ContactQuery message. Also converts values to other types if specified.
+     * @param message ContactQuery
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ContactQuery, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ContactQuery to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a ThreadBackupQuery. */
+export interface IThreadBackupQuery {
+
+    /** ThreadBackupQuery address */
+    address?: (string|null);
+}
+
+/** Represents a ThreadBackupQuery. */
+export class ThreadBackupQuery implements IThreadBackupQuery {
+
+    /**
+     * Constructs a new ThreadBackupQuery.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IThreadBackupQuery);
+
+    /** ThreadBackupQuery address. */
+    public address: string;
+
+    /**
+     * Creates a new ThreadBackupQuery instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns ThreadBackupQuery instance
+     */
+    public static create(properties?: IThreadBackupQuery): ThreadBackupQuery;
+
+    /**
+     * Encodes the specified ThreadBackupQuery message. Does not implicitly {@link ThreadBackupQuery.verify|verify} messages.
+     * @param message ThreadBackupQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IThreadBackupQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified ThreadBackupQuery message, length delimited. Does not implicitly {@link ThreadBackupQuery.verify|verify} messages.
+     * @param message ThreadBackupQuery message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IThreadBackupQuery, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a ThreadBackupQuery message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns ThreadBackupQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): ThreadBackupQuery;
+
+    /**
+     * Decodes a ThreadBackupQuery message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns ThreadBackupQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): ThreadBackupQuery;
+
+    /**
+     * Verifies a ThreadBackupQuery message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a ThreadBackupQuery message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns ThreadBackupQuery
+     */
+    public static fromObject(object: { [k: string]: any }): ThreadBackupQuery;
+
+    /**
+     * Creates a plain object from a ThreadBackupQuery message. Also converts values to other types if specified.
+     * @param message ThreadBackupQuery
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: ThreadBackupQuery, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this ThreadBackupQuery to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
 }
 
 /** Properties of a ThreadEnvelope. */
