@@ -391,6 +391,7 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
      * @property {string|null} [value] CafeRegistration value
      * @property {string|null} [nonce] CafeRegistration nonce
      * @property {Uint8Array|null} [sig] CafeRegistration sig
+     * @property {string|null} [token] CafeRegistration token
      */
 
     /**
@@ -441,6 +442,14 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
     CafeRegistration.prototype.sig = $util.newBuffer([]);
 
     /**
+     * CafeRegistration token.
+     * @member {string} token
+     * @memberof CafeRegistration
+     * @instance
+     */
+    CafeRegistration.prototype.token = "";
+
+    /**
      * Creates a new CafeRegistration instance using the specified properties.
      * @function create
      * @memberof CafeRegistration
@@ -472,6 +481,8 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.nonce);
         if (message.sig != null && message.hasOwnProperty("sig"))
             writer.uint32(/* id 4, wireType 2 =*/34).bytes(message.sig);
+        if (message.token != null && message.hasOwnProperty("token"))
+            writer.uint32(/* id 5, wireType 2 =*/42).string(message.token);
         return writer;
     };
 
@@ -517,6 +528,9 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
                 break;
             case 4:
                 message.sig = reader.bytes();
+                break;
+            case 5:
+                message.token = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -565,6 +579,9 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
         if (message.sig != null && message.hasOwnProperty("sig"))
             if (!(message.sig && typeof message.sig.length === "number" || $util.isString(message.sig)))
                 return "sig: buffer expected";
+        if (message.token != null && message.hasOwnProperty("token"))
+            if (!$util.isString(message.token))
+                return "token: string expected";
         return null;
     };
 
@@ -591,6 +608,8 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
                 $util.base64.decode(object.sig, message.sig = $util.newBuffer($util.base64.length(object.sig)), 0);
             else if (object.sig.length)
                 message.sig = object.sig;
+        if (object.token != null)
+            message.token = String(object.token);
         return message;
     };
 
@@ -618,6 +637,7 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
                 if (options.bytes !== Array)
                     object.sig = $util.newBuffer(object.sig);
             }
+            object.token = "";
         }
         if (message.address != null && message.hasOwnProperty("address"))
             object.address = message.address;
@@ -627,6 +647,8 @@ export const CafeRegistration = $root.CafeRegistration = (() => {
             object.nonce = message.nonce;
         if (message.sig != null && message.hasOwnProperty("sig"))
             object.sig = options.bytes === String ? $util.base64.encode(message.sig, 0, message.sig.length) : options.bytes === Array ? Array.prototype.slice.call(message.sig) : message.sig;
+        if (message.token != null && message.hasOwnProperty("token"))
+            object.token = message.token;
         return object;
     };
 
@@ -3280,9 +3302,11 @@ export const CafeThread = $root.CafeThread = (() => {
      * @property {string|null} [name] CafeThread name
      * @property {string|null} [schema] CafeThread schema
      * @property {string|null} [initiator] CafeThread initiator
-     * @property {number|null} [type] CafeThread type
-     * @property {number|null} [state] CafeThread state
+     * @property {CafeThread.Type|null} [type] CafeThread type
+     * @property {CafeThread.State|null} [state] CafeThread state
      * @property {string|null} [head] CafeThread head
+     * @property {CafeThread.Sharing|null} [sharing] CafeThread sharing
+     * @property {Array.<string>|null} [members] CafeThread members
      */
 
     /**
@@ -3294,6 +3318,7 @@ export const CafeThread = $root.CafeThread = (() => {
      * @param {ICafeThread=} [properties] Properties to set
      */
     function CafeThread(properties) {
+        this.members = [];
         if (properties)
             for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -3342,7 +3367,7 @@ export const CafeThread = $root.CafeThread = (() => {
 
     /**
      * CafeThread type.
-     * @member {number} type
+     * @member {CafeThread.Type} type
      * @memberof CafeThread
      * @instance
      */
@@ -3350,7 +3375,7 @@ export const CafeThread = $root.CafeThread = (() => {
 
     /**
      * CafeThread state.
-     * @member {number} state
+     * @member {CafeThread.State} state
      * @memberof CafeThread
      * @instance
      */
@@ -3363,6 +3388,22 @@ export const CafeThread = $root.CafeThread = (() => {
      * @instance
      */
     CafeThread.prototype.head = "";
+
+    /**
+     * CafeThread sharing.
+     * @member {CafeThread.Sharing} sharing
+     * @memberof CafeThread
+     * @instance
+     */
+    CafeThread.prototype.sharing = 0;
+
+    /**
+     * CafeThread members.
+     * @member {Array.<string>} members
+     * @memberof CafeThread
+     * @instance
+     */
+    CafeThread.prototype.members = $util.emptyArray;
 
     /**
      * Creates a new CafeThread instance using the specified properties.
@@ -3404,6 +3445,11 @@ export const CafeThread = $root.CafeThread = (() => {
             writer.uint32(/* id 7, wireType 0 =*/56).int32(message.state);
         if (message.head != null && message.hasOwnProperty("head"))
             writer.uint32(/* id 8, wireType 2 =*/66).string(message.head);
+        if (message.sharing != null && message.hasOwnProperty("sharing"))
+            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.sharing);
+        if (message.members != null && message.members.length)
+            for (let i = 0; i < message.members.length; ++i)
+                writer.uint32(/* id 10, wireType 2 =*/82).string(message.members[i]);
         return writer;
     };
 
@@ -3462,6 +3508,14 @@ export const CafeThread = $root.CafeThread = (() => {
             case 8:
                 message.head = reader.string();
                 break;
+            case 9:
+                message.sharing = reader.int32();
+                break;
+            case 10:
+                if (!(message.members && message.members.length))
+                    message.members = [];
+                message.members.push(reader.string());
+                break;
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -3513,14 +3567,43 @@ export const CafeThread = $root.CafeThread = (() => {
             if (!$util.isString(message.initiator))
                 return "initiator: string expected";
         if (message.type != null && message.hasOwnProperty("type"))
-            if (!$util.isInteger(message.type))
-                return "type: integer expected";
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+            }
         if (message.state != null && message.hasOwnProperty("state"))
-            if (!$util.isInteger(message.state))
-                return "state: integer expected";
+            switch (message.state) {
+            default:
+                return "state: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+                break;
+            }
         if (message.head != null && message.hasOwnProperty("head"))
             if (!$util.isString(message.head))
                 return "head: string expected";
+        if (message.sharing != null && message.hasOwnProperty("sharing"))
+            switch (message.sharing) {
+            default:
+                return "sharing: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+                break;
+            }
+        if (message.members != null && message.hasOwnProperty("members")) {
+            if (!Array.isArray(message.members))
+                return "members: array expected";
+            for (let i = 0; i < message.members.length; ++i)
+                if (!$util.isString(message.members[i]))
+                    return "members: string[] expected";
+        }
         return null;
     };
 
@@ -3549,12 +3632,61 @@ export const CafeThread = $root.CafeThread = (() => {
             message.schema = String(object.schema);
         if (object.initiator != null)
             message.initiator = String(object.initiator);
-        if (object.type != null)
-            message.type = object.type | 0;
-        if (object.state != null)
-            message.state = object.state | 0;
+        switch (object.type) {
+        case "Private":
+        case 0:
+            message.type = 0;
+            break;
+        case "ReadOnly":
+        case 1:
+            message.type = 1;
+            break;
+        case "Public":
+        case 2:
+            message.type = 2;
+            break;
+        case "Open":
+        case 3:
+            message.type = 3;
+            break;
+        }
+        switch (object.state) {
+        case "LoadingBehind":
+        case 0:
+            message.state = 0;
+            break;
+        case "Loaded":
+        case 1:
+            message.state = 1;
+            break;
+        case "LoadingAhead":
+        case 2:
+            message.state = 2;
+            break;
+        }
         if (object.head != null)
             message.head = String(object.head);
+        switch (object.sharing) {
+        case "NotShared":
+        case 0:
+            message.sharing = 0;
+            break;
+        case "InviteOnly":
+        case 1:
+            message.sharing = 1;
+            break;
+        case "Shared":
+        case 2:
+            message.sharing = 2;
+            break;
+        }
+        if (object.members) {
+            if (!Array.isArray(object.members))
+                throw TypeError(".CafeThread.members: array expected");
+            message.members = [];
+            for (let i = 0; i < object.members.length; ++i)
+                message.members[i] = String(object.members[i]);
+        }
         return message;
     };
 
@@ -3571,6 +3703,8 @@ export const CafeThread = $root.CafeThread = (() => {
         if (!options)
             options = {};
         let object = {};
+        if (options.arrays || options.defaults)
+            object.members = [];
         if (options.defaults) {
             object.key = "";
             if (options.bytes === String)
@@ -3583,9 +3717,10 @@ export const CafeThread = $root.CafeThread = (() => {
             object.name = "";
             object.schema = "";
             object.initiator = "";
-            object.type = 0;
-            object.state = 0;
+            object.type = options.enums === String ? "Private" : 0;
+            object.state = options.enums === String ? "LoadingBehind" : 0;
             object.head = "";
+            object.sharing = options.enums === String ? "NotShared" : 0;
         }
         if (message.key != null && message.hasOwnProperty("key"))
             object.key = message.key;
@@ -3598,11 +3733,18 @@ export const CafeThread = $root.CafeThread = (() => {
         if (message.initiator != null && message.hasOwnProperty("initiator"))
             object.initiator = message.initiator;
         if (message.type != null && message.hasOwnProperty("type"))
-            object.type = message.type;
+            object.type = options.enums === String ? $root.CafeThread.Type[message.type] : message.type;
         if (message.state != null && message.hasOwnProperty("state"))
-            object.state = message.state;
+            object.state = options.enums === String ? $root.CafeThread.State[message.state] : message.state;
         if (message.head != null && message.hasOwnProperty("head"))
             object.head = message.head;
+        if (message.sharing != null && message.hasOwnProperty("sharing"))
+            object.sharing = options.enums === String ? $root.CafeThread.Sharing[message.sharing] : message.sharing;
+        if (message.members && message.members.length) {
+            object.members = [];
+            for (let j = 0; j < message.members.length; ++j)
+                object.members[j] = message.members[j];
+        }
         return object;
     };
 
@@ -3617,7 +3759,298 @@ export const CafeThread = $root.CafeThread = (() => {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
+    /**
+     * Type enum.
+     * @name CafeThread.Type
+     * @enum {string}
+     * @property {number} Private=0 Private value
+     * @property {number} ReadOnly=1 ReadOnly value
+     * @property {number} Public=2 Public value
+     * @property {number} Open=3 Open value
+     */
+    CafeThread.Type = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "Private"] = 0;
+        values[valuesById[1] = "ReadOnly"] = 1;
+        values[valuesById[2] = "Public"] = 2;
+        values[valuesById[3] = "Open"] = 3;
+        return values;
+    })();
+
+    /**
+     * Sharing enum.
+     * @name CafeThread.Sharing
+     * @enum {string}
+     * @property {number} NotShared=0 NotShared value
+     * @property {number} InviteOnly=1 InviteOnly value
+     * @property {number} Shared=2 Shared value
+     */
+    CafeThread.Sharing = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "NotShared"] = 0;
+        values[valuesById[1] = "InviteOnly"] = 1;
+        values[valuesById[2] = "Shared"] = 2;
+        return values;
+    })();
+
+    /**
+     * State enum.
+     * @name CafeThread.State
+     * @enum {string}
+     * @property {number} LoadingBehind=0 LoadingBehind value
+     * @property {number} Loaded=1 Loaded value
+     * @property {number} LoadingAhead=2 LoadingAhead value
+     */
+    CafeThread.State = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "LoadingBehind"] = 0;
+        values[valuesById[1] = "Loaded"] = 1;
+        values[valuesById[2] = "LoadingAhead"] = 2;
+        return values;
+    })();
+
     return CafeThread;
+})();
+
+export const CafeClientThread = $root.CafeClientThread = (() => {
+
+    /**
+     * Properties of a CafeClientThread.
+     * @exports ICafeClientThread
+     * @interface ICafeClientThread
+     * @property {string|null} [id] CafeClientThread id
+     * @property {string|null} [clientId] CafeClientThread clientId
+     * @property {Uint8Array|null} [ciphertext] CafeClientThread ciphertext
+     */
+
+    /**
+     * Constructs a new CafeClientThread.
+     * @exports CafeClientThread
+     * @classdesc Represents a CafeClientThread.
+     * @implements ICafeClientThread
+     * @constructor
+     * @param {ICafeClientThread=} [properties] Properties to set
+     */
+    function CafeClientThread(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CafeClientThread id.
+     * @member {string} id
+     * @memberof CafeClientThread
+     * @instance
+     */
+    CafeClientThread.prototype.id = "";
+
+    /**
+     * CafeClientThread clientId.
+     * @member {string} clientId
+     * @memberof CafeClientThread
+     * @instance
+     */
+    CafeClientThread.prototype.clientId = "";
+
+    /**
+     * CafeClientThread ciphertext.
+     * @member {Uint8Array} ciphertext
+     * @memberof CafeClientThread
+     * @instance
+     */
+    CafeClientThread.prototype.ciphertext = $util.newBuffer([]);
+
+    /**
+     * Creates a new CafeClientThread instance using the specified properties.
+     * @function create
+     * @memberof CafeClientThread
+     * @static
+     * @param {ICafeClientThread=} [properties] Properties to set
+     * @returns {CafeClientThread} CafeClientThread instance
+     */
+    CafeClientThread.create = function create(properties) {
+        return new CafeClientThread(properties);
+    };
+
+    /**
+     * Encodes the specified CafeClientThread message. Does not implicitly {@link CafeClientThread.verify|verify} messages.
+     * @function encode
+     * @memberof CafeClientThread
+     * @static
+     * @param {ICafeClientThread} message CafeClientThread message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeClientThread.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.clientId != null && message.hasOwnProperty("clientId"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.clientId);
+        if (message.ciphertext != null && message.hasOwnProperty("ciphertext"))
+            writer.uint32(/* id 3, wireType 2 =*/26).bytes(message.ciphertext);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CafeClientThread message, length delimited. Does not implicitly {@link CafeClientThread.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CafeClientThread
+     * @static
+     * @param {ICafeClientThread} message CafeClientThread message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CafeClientThread.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CafeClientThread message from the specified reader or buffer.
+     * @function decode
+     * @memberof CafeClientThread
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CafeClientThread} CafeClientThread
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeClientThread.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.CafeClientThread();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.clientId = reader.string();
+                break;
+            case 3:
+                message.ciphertext = reader.bytes();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CafeClientThread message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CafeClientThread
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CafeClientThread} CafeClientThread
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CafeClientThread.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CafeClientThread message.
+     * @function verify
+     * @memberof CafeClientThread
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CafeClientThread.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.clientId != null && message.hasOwnProperty("clientId"))
+            if (!$util.isString(message.clientId))
+                return "clientId: string expected";
+        if (message.ciphertext != null && message.hasOwnProperty("ciphertext"))
+            if (!(message.ciphertext && typeof message.ciphertext.length === "number" || $util.isString(message.ciphertext)))
+                return "ciphertext: buffer expected";
+        return null;
+    };
+
+    /**
+     * Creates a CafeClientThread message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CafeClientThread
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CafeClientThread} CafeClientThread
+     */
+    CafeClientThread.fromObject = function fromObject(object) {
+        if (object instanceof $root.CafeClientThread)
+            return object;
+        let message = new $root.CafeClientThread();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.clientId != null)
+            message.clientId = String(object.clientId);
+        if (object.ciphertext != null)
+            if (typeof object.ciphertext === "string")
+                $util.base64.decode(object.ciphertext, message.ciphertext = $util.newBuffer($util.base64.length(object.ciphertext)), 0);
+            else if (object.ciphertext.length)
+                message.ciphertext = object.ciphertext;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CafeClientThread message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CafeClientThread
+     * @static
+     * @param {CafeClientThread} message CafeClientThread
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CafeClientThread.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.clientId = "";
+            if (options.bytes === String)
+                object.ciphertext = "";
+            else {
+                object.ciphertext = [];
+                if (options.bytes !== Array)
+                    object.ciphertext = $util.newBuffer(object.ciphertext);
+            }
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.clientId != null && message.hasOwnProperty("clientId"))
+            object.clientId = message.clientId;
+        if (message.ciphertext != null && message.hasOwnProperty("ciphertext"))
+            object.ciphertext = options.bytes === String ? $util.base64.encode(message.ciphertext, 0, message.ciphertext.length) : options.bytes === Array ? Array.prototype.slice.call(message.ciphertext) : message.ciphertext;
+        return object;
+    };
+
+    /**
+     * Converts this CafeClientThread to JSON.
+     * @function toJSON
+     * @memberof CafeClientThread
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CafeClientThread.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return CafeClientThread;
 })();
 
 export const CafeStored = $root.CafeStored = (() => {
@@ -6875,11 +7308,15 @@ export const Message = $root.Message = (() => {
             case 65:
             case 66:
             case 67:
+            case 70:
+            case 71:
+            case 102:
+            case 103:
+            case 500:
             case 68:
             case 69:
             case 100:
             case 101:
-            case 500:
                 break;
             }
         if (message.payload != null && message.hasOwnProperty("payload")) {
@@ -6993,6 +7430,26 @@ export const Message = $root.Message = (() => {
         case 67:
             message.type = 67;
             break;
+        case "CAFE_QUERY":
+        case 70:
+            message.type = 70;
+            break;
+        case "CAFE_QUERY_RES":
+        case 71:
+            message.type = 71;
+            break;
+        case "CAFE_PUBSUB_QUERY":
+        case 102:
+            message.type = 102;
+            break;
+        case "CAFE_PUBSUB_QUERY_RES":
+        case 103:
+            message.type = 103;
+            break;
+        case "ERROR":
+        case 500:
+            message.type = 500;
+            break;
         case "CAFE_CONTACT_QUERY":
         case 68:
             message.type = 68;
@@ -7008,10 +7465,6 @@ export const Message = $root.Message = (() => {
         case "CAFE_PUBSUB_CONTACT_QUERY_RES":
         case 101:
             message.type = 101;
-            break;
-        case "ERROR":
-        case 500:
-            message.type = 500;
             break;
         }
         if (object.payload != null) {
@@ -7092,11 +7545,15 @@ export const Message = $root.Message = (() => {
      * @property {number} CAFE_YOU_HAVE_MAIL=65 CAFE_YOU_HAVE_MAIL value
      * @property {number} CAFE_PUBLISH_CONTACT=66 CAFE_PUBLISH_CONTACT value
      * @property {number} CAFE_PUBLISH_CONTACT_ACK=67 CAFE_PUBLISH_CONTACT_ACK value
+     * @property {number} CAFE_QUERY=70 CAFE_QUERY value
+     * @property {number} CAFE_QUERY_RES=71 CAFE_QUERY_RES value
+     * @property {number} CAFE_PUBSUB_QUERY=102 CAFE_PUBSUB_QUERY value
+     * @property {number} CAFE_PUBSUB_QUERY_RES=103 CAFE_PUBSUB_QUERY_RES value
+     * @property {number} ERROR=500 ERROR value
      * @property {number} CAFE_CONTACT_QUERY=68 CAFE_CONTACT_QUERY value
      * @property {number} CAFE_CONTACT_QUERY_RES=69 CAFE_CONTACT_QUERY_RES value
      * @property {number} CAFE_PUBSUB_CONTACT_QUERY=100 CAFE_PUBSUB_CONTACT_QUERY value
      * @property {number} CAFE_PUBSUB_CONTACT_QUERY_RES=101 CAFE_PUBSUB_CONTACT_QUERY_RES value
-     * @property {number} ERROR=500 ERROR value
      */
     Message.Type = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -7121,11 +7578,15 @@ export const Message = $root.Message = (() => {
         values[valuesById[65] = "CAFE_YOU_HAVE_MAIL"] = 65;
         values[valuesById[66] = "CAFE_PUBLISH_CONTACT"] = 66;
         values[valuesById[67] = "CAFE_PUBLISH_CONTACT_ACK"] = 67;
+        values[valuesById[70] = "CAFE_QUERY"] = 70;
+        values[valuesById[71] = "CAFE_QUERY_RES"] = 71;
+        values[valuesById[102] = "CAFE_PUBSUB_QUERY"] = 102;
+        values[valuesById[103] = "CAFE_PUBSUB_QUERY_RES"] = 103;
+        values[valuesById[500] = "ERROR"] = 500;
         values[valuesById[68] = "CAFE_CONTACT_QUERY"] = 68;
         values[valuesById[69] = "CAFE_CONTACT_QUERY_RES"] = 69;
         values[valuesById[100] = "CAFE_PUBSUB_CONTACT_QUERY"] = 100;
         values[valuesById[101] = "CAFE_PUBSUB_CONTACT_QUERY_RES"] = 101;
-        values[valuesById[500] = "ERROR"] = 500;
         return values;
     })();
 
@@ -8831,6 +9292,2261 @@ export const google = $root.google = (() => {
     })();
 
     return google;
+})();
+
+/**
+ * QueryType enum.
+ * @exports QueryType
+ * @enum {string}
+ * @property {number} THREAD_BACKUPS=0 THREAD_BACKUPS value
+ * @property {number} CONTACTS=1 CONTACTS value
+ */
+$root.QueryType = (function() {
+    const valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "THREAD_BACKUPS"] = 0;
+    values[valuesById[1] = "CONTACTS"] = 1;
+    return values;
+})();
+
+export const QueryOptions = $root.QueryOptions = (() => {
+
+    /**
+     * Properties of a QueryOptions.
+     * @exports IQueryOptions
+     * @interface IQueryOptions
+     * @property {boolean|null} [local] QueryOptions local
+     * @property {number|null} [limit] QueryOptions limit
+     * @property {number|null} [wait] QueryOptions wait
+     * @property {QueryOptions.FilterType|null} [filter] QueryOptions filter
+     */
+
+    /**
+     * Constructs a new QueryOptions.
+     * @exports QueryOptions
+     * @classdesc Represents a QueryOptions.
+     * @implements IQueryOptions
+     * @constructor
+     * @param {IQueryOptions=} [properties] Properties to set
+     */
+    function QueryOptions(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * QueryOptions local.
+     * @member {boolean} local
+     * @memberof QueryOptions
+     * @instance
+     */
+    QueryOptions.prototype.local = false;
+
+    /**
+     * QueryOptions limit.
+     * @member {number} limit
+     * @memberof QueryOptions
+     * @instance
+     */
+    QueryOptions.prototype.limit = 0;
+
+    /**
+     * QueryOptions wait.
+     * @member {number} wait
+     * @memberof QueryOptions
+     * @instance
+     */
+    QueryOptions.prototype.wait = 0;
+
+    /**
+     * QueryOptions filter.
+     * @member {QueryOptions.FilterType} filter
+     * @memberof QueryOptions
+     * @instance
+     */
+    QueryOptions.prototype.filter = 0;
+
+    /**
+     * Creates a new QueryOptions instance using the specified properties.
+     * @function create
+     * @memberof QueryOptions
+     * @static
+     * @param {IQueryOptions=} [properties] Properties to set
+     * @returns {QueryOptions} QueryOptions instance
+     */
+    QueryOptions.create = function create(properties) {
+        return new QueryOptions(properties);
+    };
+
+    /**
+     * Encodes the specified QueryOptions message. Does not implicitly {@link QueryOptions.verify|verify} messages.
+     * @function encode
+     * @memberof QueryOptions
+     * @static
+     * @param {IQueryOptions} message QueryOptions message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryOptions.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.local != null && message.hasOwnProperty("local"))
+            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.local);
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.limit);
+        if (message.wait != null && message.hasOwnProperty("wait"))
+            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.wait);
+        if (message.filter != null && message.hasOwnProperty("filter"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.filter);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified QueryOptions message, length delimited. Does not implicitly {@link QueryOptions.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof QueryOptions
+     * @static
+     * @param {IQueryOptions} message QueryOptions message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryOptions.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a QueryOptions message from the specified reader or buffer.
+     * @function decode
+     * @memberof QueryOptions
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {QueryOptions} QueryOptions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryOptions.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.QueryOptions();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.local = reader.bool();
+                break;
+            case 2:
+                message.limit = reader.int32();
+                break;
+            case 3:
+                message.wait = reader.int32();
+                break;
+            case 4:
+                message.filter = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a QueryOptions message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof QueryOptions
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {QueryOptions} QueryOptions
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryOptions.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a QueryOptions message.
+     * @function verify
+     * @memberof QueryOptions
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    QueryOptions.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.local != null && message.hasOwnProperty("local"))
+            if (typeof message.local !== "boolean")
+                return "local: boolean expected";
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            if (!$util.isInteger(message.limit))
+                return "limit: integer expected";
+        if (message.wait != null && message.hasOwnProperty("wait"))
+            if (!$util.isInteger(message.wait))
+                return "wait: integer expected";
+        if (message.filter != null && message.hasOwnProperty("filter"))
+            switch (message.filter) {
+            default:
+                return "filter: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a QueryOptions message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof QueryOptions
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {QueryOptions} QueryOptions
+     */
+    QueryOptions.fromObject = function fromObject(object) {
+        if (object instanceof $root.QueryOptions)
+            return object;
+        let message = new $root.QueryOptions();
+        if (object.local != null)
+            message.local = Boolean(object.local);
+        if (object.limit != null)
+            message.limit = object.limit | 0;
+        if (object.wait != null)
+            message.wait = object.wait | 0;
+        switch (object.filter) {
+        case "NO_FILTER":
+        case 0:
+            message.filter = 0;
+            break;
+        case "HIDE_OLDER":
+        case 1:
+            message.filter = 1;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a QueryOptions message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof QueryOptions
+     * @static
+     * @param {QueryOptions} message QueryOptions
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    QueryOptions.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.local = false;
+            object.limit = 0;
+            object.wait = 0;
+            object.filter = options.enums === String ? "NO_FILTER" : 0;
+        }
+        if (message.local != null && message.hasOwnProperty("local"))
+            object.local = message.local;
+        if (message.limit != null && message.hasOwnProperty("limit"))
+            object.limit = message.limit;
+        if (message.wait != null && message.hasOwnProperty("wait"))
+            object.wait = message.wait;
+        if (message.filter != null && message.hasOwnProperty("filter"))
+            object.filter = options.enums === String ? $root.QueryOptions.FilterType[message.filter] : message.filter;
+        return object;
+    };
+
+    /**
+     * Converts this QueryOptions to JSON.
+     * @function toJSON
+     * @memberof QueryOptions
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    QueryOptions.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * FilterType enum.
+     * @name QueryOptions.FilterType
+     * @enum {string}
+     * @property {number} NO_FILTER=0 NO_FILTER value
+     * @property {number} HIDE_OLDER=1 HIDE_OLDER value
+     */
+    QueryOptions.FilterType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "NO_FILTER"] = 0;
+        values[valuesById[1] = "HIDE_OLDER"] = 1;
+        return values;
+    })();
+
+    return QueryOptions;
+})();
+
+export const Query = $root.Query = (() => {
+
+    /**
+     * Properties of a Query.
+     * @exports IQuery
+     * @interface IQuery
+     * @property {string|null} [token] Query token
+     * @property {QueryType|null} [type] Query type
+     * @property {IQueryOptions|null} [options] Query options
+     * @property {google.protobuf.IAny|null} [payload] Query payload
+     */
+
+    /**
+     * Constructs a new Query.
+     * @exports Query
+     * @classdesc Represents a Query.
+     * @implements IQuery
+     * @constructor
+     * @param {IQuery=} [properties] Properties to set
+     */
+    function Query(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Query token.
+     * @member {string} token
+     * @memberof Query
+     * @instance
+     */
+    Query.prototype.token = "";
+
+    /**
+     * Query type.
+     * @member {QueryType} type
+     * @memberof Query
+     * @instance
+     */
+    Query.prototype.type = 0;
+
+    /**
+     * Query options.
+     * @member {IQueryOptions|null|undefined} options
+     * @memberof Query
+     * @instance
+     */
+    Query.prototype.options = null;
+
+    /**
+     * Query payload.
+     * @member {google.protobuf.IAny|null|undefined} payload
+     * @memberof Query
+     * @instance
+     */
+    Query.prototype.payload = null;
+
+    /**
+     * Creates a new Query instance using the specified properties.
+     * @function create
+     * @memberof Query
+     * @static
+     * @param {IQuery=} [properties] Properties to set
+     * @returns {Query} Query instance
+     */
+    Query.create = function create(properties) {
+        return new Query(properties);
+    };
+
+    /**
+     * Encodes the specified Query message. Does not implicitly {@link Query.verify|verify} messages.
+     * @function encode
+     * @memberof Query
+     * @static
+     * @param {IQuery} message Query message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Query.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.token != null && message.hasOwnProperty("token"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.token);
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.type);
+        if (message.options != null && message.hasOwnProperty("options"))
+            $root.QueryOptions.encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.payload != null && message.hasOwnProperty("payload"))
+            $root.google.protobuf.Any.encode(message.payload, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Query message, length delimited. Does not implicitly {@link Query.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Query
+     * @static
+     * @param {IQuery} message Query message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Query.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Query message from the specified reader or buffer.
+     * @function decode
+     * @memberof Query
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Query} Query
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Query.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.Query();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.token = reader.string();
+                break;
+            case 2:
+                message.type = reader.int32();
+                break;
+            case 3:
+                message.options = $root.QueryOptions.decode(reader, reader.uint32());
+                break;
+            case 4:
+                message.payload = $root.google.protobuf.Any.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Query message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Query
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Query} Query
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Query.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Query message.
+     * @function verify
+     * @memberof Query
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Query.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.token != null && message.hasOwnProperty("token"))
+            if (!$util.isString(message.token))
+                return "token: string expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        if (message.options != null && message.hasOwnProperty("options")) {
+            let error = $root.QueryOptions.verify(message.options);
+            if (error)
+                return "options." + error;
+        }
+        if (message.payload != null && message.hasOwnProperty("payload")) {
+            let error = $root.google.protobuf.Any.verify(message.payload);
+            if (error)
+                return "payload." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a Query message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Query
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Query} Query
+     */
+    Query.fromObject = function fromObject(object) {
+        if (object instanceof $root.Query)
+            return object;
+        let message = new $root.Query();
+        if (object.token != null)
+            message.token = String(object.token);
+        switch (object.type) {
+        case "THREAD_BACKUPS":
+        case 0:
+            message.type = 0;
+            break;
+        case "CONTACTS":
+        case 1:
+            message.type = 1;
+            break;
+        }
+        if (object.options != null) {
+            if (typeof object.options !== "object")
+                throw TypeError(".Query.options: object expected");
+            message.options = $root.QueryOptions.fromObject(object.options);
+        }
+        if (object.payload != null) {
+            if (typeof object.payload !== "object")
+                throw TypeError(".Query.payload: object expected");
+            message.payload = $root.google.protobuf.Any.fromObject(object.payload);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Query message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Query
+     * @static
+     * @param {Query} message Query
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Query.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.token = "";
+            object.type = options.enums === String ? "THREAD_BACKUPS" : 0;
+            object.options = null;
+            object.payload = null;
+        }
+        if (message.token != null && message.hasOwnProperty("token"))
+            object.token = message.token;
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = options.enums === String ? $root.QueryType[message.type] : message.type;
+        if (message.options != null && message.hasOwnProperty("options"))
+            object.options = $root.QueryOptions.toObject(message.options, options);
+        if (message.payload != null && message.hasOwnProperty("payload"))
+            object.payload = $root.google.protobuf.Any.toObject(message.payload, options);
+        return object;
+    };
+
+    /**
+     * Converts this Query to JSON.
+     * @function toJSON
+     * @memberof Query
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Query.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Query;
+})();
+
+export const PubSubQuery = $root.PubSubQuery = (() => {
+
+    /**
+     * Properties of a PubSubQuery.
+     * @exports IPubSubQuery
+     * @interface IPubSubQuery
+     * @property {string|null} [id] PubSubQuery id
+     * @property {QueryType|null} [type] PubSubQuery type
+     * @property {google.protobuf.IAny|null} [payload] PubSubQuery payload
+     * @property {PubSubQuery.ResponseType|null} [responseType] PubSubQuery responseType
+     */
+
+    /**
+     * Constructs a new PubSubQuery.
+     * @exports PubSubQuery
+     * @classdesc Represents a PubSubQuery.
+     * @implements IPubSubQuery
+     * @constructor
+     * @param {IPubSubQuery=} [properties] Properties to set
+     */
+    function PubSubQuery(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * PubSubQuery id.
+     * @member {string} id
+     * @memberof PubSubQuery
+     * @instance
+     */
+    PubSubQuery.prototype.id = "";
+
+    /**
+     * PubSubQuery type.
+     * @member {QueryType} type
+     * @memberof PubSubQuery
+     * @instance
+     */
+    PubSubQuery.prototype.type = 0;
+
+    /**
+     * PubSubQuery payload.
+     * @member {google.protobuf.IAny|null|undefined} payload
+     * @memberof PubSubQuery
+     * @instance
+     */
+    PubSubQuery.prototype.payload = null;
+
+    /**
+     * PubSubQuery responseType.
+     * @member {PubSubQuery.ResponseType} responseType
+     * @memberof PubSubQuery
+     * @instance
+     */
+    PubSubQuery.prototype.responseType = 0;
+
+    /**
+     * Creates a new PubSubQuery instance using the specified properties.
+     * @function create
+     * @memberof PubSubQuery
+     * @static
+     * @param {IPubSubQuery=} [properties] Properties to set
+     * @returns {PubSubQuery} PubSubQuery instance
+     */
+    PubSubQuery.create = function create(properties) {
+        return new PubSubQuery(properties);
+    };
+
+    /**
+     * Encodes the specified PubSubQuery message. Does not implicitly {@link PubSubQuery.verify|verify} messages.
+     * @function encode
+     * @memberof PubSubQuery
+     * @static
+     * @param {IPubSubQuery} message PubSubQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PubSubQuery.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.type);
+        if (message.payload != null && message.hasOwnProperty("payload"))
+            $root.google.protobuf.Any.encode(message.payload, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.responseType != null && message.hasOwnProperty("responseType"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.responseType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified PubSubQuery message, length delimited. Does not implicitly {@link PubSubQuery.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof PubSubQuery
+     * @static
+     * @param {IPubSubQuery} message PubSubQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PubSubQuery.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a PubSubQuery message from the specified reader or buffer.
+     * @function decode
+     * @memberof PubSubQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {PubSubQuery} PubSubQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PubSubQuery.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.PubSubQuery();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.type = reader.int32();
+                break;
+            case 3:
+                message.payload = $root.google.protobuf.Any.decode(reader, reader.uint32());
+                break;
+            case 4:
+                message.responseType = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a PubSubQuery message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof PubSubQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {PubSubQuery} PubSubQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PubSubQuery.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a PubSubQuery message.
+     * @function verify
+     * @memberof PubSubQuery
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    PubSubQuery.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        if (message.payload != null && message.hasOwnProperty("payload")) {
+            let error = $root.google.protobuf.Any.verify(message.payload);
+            if (error)
+                return "payload." + error;
+        }
+        if (message.responseType != null && message.hasOwnProperty("responseType"))
+            switch (message.responseType) {
+            default:
+                return "responseType: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a PubSubQuery message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof PubSubQuery
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {PubSubQuery} PubSubQuery
+     */
+    PubSubQuery.fromObject = function fromObject(object) {
+        if (object instanceof $root.PubSubQuery)
+            return object;
+        let message = new $root.PubSubQuery();
+        if (object.id != null)
+            message.id = String(object.id);
+        switch (object.type) {
+        case "THREAD_BACKUPS":
+        case 0:
+            message.type = 0;
+            break;
+        case "CONTACTS":
+        case 1:
+            message.type = 1;
+            break;
+        }
+        if (object.payload != null) {
+            if (typeof object.payload !== "object")
+                throw TypeError(".PubSubQuery.payload: object expected");
+            message.payload = $root.google.protobuf.Any.fromObject(object.payload);
+        }
+        switch (object.responseType) {
+        case "P2P":
+        case 0:
+            message.responseType = 0;
+            break;
+        case "PUBSUB":
+        case 1:
+            message.responseType = 1;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a PubSubQuery message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof PubSubQuery
+     * @static
+     * @param {PubSubQuery} message PubSubQuery
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    PubSubQuery.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.type = options.enums === String ? "THREAD_BACKUPS" : 0;
+            object.payload = null;
+            object.responseType = options.enums === String ? "P2P" : 0;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = options.enums === String ? $root.QueryType[message.type] : message.type;
+        if (message.payload != null && message.hasOwnProperty("payload"))
+            object.payload = $root.google.protobuf.Any.toObject(message.payload, options);
+        if (message.responseType != null && message.hasOwnProperty("responseType"))
+            object.responseType = options.enums === String ? $root.PubSubQuery.ResponseType[message.responseType] : message.responseType;
+        return object;
+    };
+
+    /**
+     * Converts this PubSubQuery to JSON.
+     * @function toJSON
+     * @memberof PubSubQuery
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    PubSubQuery.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * ResponseType enum.
+     * @name PubSubQuery.ResponseType
+     * @enum {string}
+     * @property {number} P2P=0 P2P value
+     * @property {number} PUBSUB=1 PUBSUB value
+     */
+    PubSubQuery.ResponseType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "P2P"] = 0;
+        values[valuesById[1] = "PUBSUB"] = 1;
+        return values;
+    })();
+
+    return PubSubQuery;
+})();
+
+export const QueryResult = $root.QueryResult = (() => {
+
+    /**
+     * Properties of a QueryResult.
+     * @exports IQueryResult
+     * @interface IQueryResult
+     * @property {string|null} [id] QueryResult id
+     * @property {google.protobuf.ITimestamp|null} [date] QueryResult date
+     * @property {boolean|null} [local] QueryResult local
+     * @property {google.protobuf.IAny|null} [value] QueryResult value
+     */
+
+    /**
+     * Constructs a new QueryResult.
+     * @exports QueryResult
+     * @classdesc Represents a QueryResult.
+     * @implements IQueryResult
+     * @constructor
+     * @param {IQueryResult=} [properties] Properties to set
+     */
+    function QueryResult(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * QueryResult id.
+     * @member {string} id
+     * @memberof QueryResult
+     * @instance
+     */
+    QueryResult.prototype.id = "";
+
+    /**
+     * QueryResult date.
+     * @member {google.protobuf.ITimestamp|null|undefined} date
+     * @memberof QueryResult
+     * @instance
+     */
+    QueryResult.prototype.date = null;
+
+    /**
+     * QueryResult local.
+     * @member {boolean} local
+     * @memberof QueryResult
+     * @instance
+     */
+    QueryResult.prototype.local = false;
+
+    /**
+     * QueryResult value.
+     * @member {google.protobuf.IAny|null|undefined} value
+     * @memberof QueryResult
+     * @instance
+     */
+    QueryResult.prototype.value = null;
+
+    /**
+     * Creates a new QueryResult instance using the specified properties.
+     * @function create
+     * @memberof QueryResult
+     * @static
+     * @param {IQueryResult=} [properties] Properties to set
+     * @returns {QueryResult} QueryResult instance
+     */
+    QueryResult.create = function create(properties) {
+        return new QueryResult(properties);
+    };
+
+    /**
+     * Encodes the specified QueryResult message. Does not implicitly {@link QueryResult.verify|verify} messages.
+     * @function encode
+     * @memberof QueryResult
+     * @static
+     * @param {IQueryResult} message QueryResult message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryResult.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.date != null && message.hasOwnProperty("date"))
+            $root.google.protobuf.Timestamp.encode(message.date, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.local != null && message.hasOwnProperty("local"))
+            writer.uint32(/* id 3, wireType 0 =*/24).bool(message.local);
+        if (message.value != null && message.hasOwnProperty("value"))
+            $root.google.protobuf.Any.encode(message.value, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified QueryResult message, length delimited. Does not implicitly {@link QueryResult.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof QueryResult
+     * @static
+     * @param {IQueryResult} message QueryResult message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryResult.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a QueryResult message from the specified reader or buffer.
+     * @function decode
+     * @memberof QueryResult
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {QueryResult} QueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryResult.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.QueryResult();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.date = $root.google.protobuf.Timestamp.decode(reader, reader.uint32());
+                break;
+            case 3:
+                message.local = reader.bool();
+                break;
+            case 4:
+                message.value = $root.google.protobuf.Any.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a QueryResult message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof QueryResult
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {QueryResult} QueryResult
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryResult.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a QueryResult message.
+     * @function verify
+     * @memberof QueryResult
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    QueryResult.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.date != null && message.hasOwnProperty("date")) {
+            let error = $root.google.protobuf.Timestamp.verify(message.date);
+            if (error)
+                return "date." + error;
+        }
+        if (message.local != null && message.hasOwnProperty("local"))
+            if (typeof message.local !== "boolean")
+                return "local: boolean expected";
+        if (message.value != null && message.hasOwnProperty("value")) {
+            let error = $root.google.protobuf.Any.verify(message.value);
+            if (error)
+                return "value." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a QueryResult message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof QueryResult
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {QueryResult} QueryResult
+     */
+    QueryResult.fromObject = function fromObject(object) {
+        if (object instanceof $root.QueryResult)
+            return object;
+        let message = new $root.QueryResult();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.date != null) {
+            if (typeof object.date !== "object")
+                throw TypeError(".QueryResult.date: object expected");
+            message.date = $root.google.protobuf.Timestamp.fromObject(object.date);
+        }
+        if (object.local != null)
+            message.local = Boolean(object.local);
+        if (object.value != null) {
+            if (typeof object.value !== "object")
+                throw TypeError(".QueryResult.value: object expected");
+            message.value = $root.google.protobuf.Any.fromObject(object.value);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a QueryResult message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof QueryResult
+     * @static
+     * @param {QueryResult} message QueryResult
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    QueryResult.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.date = null;
+            object.local = false;
+            object.value = null;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.date != null && message.hasOwnProperty("date"))
+            object.date = $root.google.protobuf.Timestamp.toObject(message.date, options);
+        if (message.local != null && message.hasOwnProperty("local"))
+            object.local = message.local;
+        if (message.value != null && message.hasOwnProperty("value"))
+            object.value = $root.google.protobuf.Any.toObject(message.value, options);
+        return object;
+    };
+
+    /**
+     * Converts this QueryResult to JSON.
+     * @function toJSON
+     * @memberof QueryResult
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    QueryResult.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return QueryResult;
+})();
+
+export const QueryResults = $root.QueryResults = (() => {
+
+    /**
+     * Properties of a QueryResults.
+     * @exports IQueryResults
+     * @interface IQueryResults
+     * @property {QueryType|null} [type] QueryResults type
+     * @property {Array.<IQueryResult>|null} [items] QueryResults items
+     */
+
+    /**
+     * Constructs a new QueryResults.
+     * @exports QueryResults
+     * @classdesc Represents a QueryResults.
+     * @implements IQueryResults
+     * @constructor
+     * @param {IQueryResults=} [properties] Properties to set
+     */
+    function QueryResults(properties) {
+        this.items = [];
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * QueryResults type.
+     * @member {QueryType} type
+     * @memberof QueryResults
+     * @instance
+     */
+    QueryResults.prototype.type = 0;
+
+    /**
+     * QueryResults items.
+     * @member {Array.<IQueryResult>} items
+     * @memberof QueryResults
+     * @instance
+     */
+    QueryResults.prototype.items = $util.emptyArray;
+
+    /**
+     * Creates a new QueryResults instance using the specified properties.
+     * @function create
+     * @memberof QueryResults
+     * @static
+     * @param {IQueryResults=} [properties] Properties to set
+     * @returns {QueryResults} QueryResults instance
+     */
+    QueryResults.create = function create(properties) {
+        return new QueryResults(properties);
+    };
+
+    /**
+     * Encodes the specified QueryResults message. Does not implicitly {@link QueryResults.verify|verify} messages.
+     * @function encode
+     * @memberof QueryResults
+     * @static
+     * @param {IQueryResults} message QueryResults message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryResults.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+        if (message.items != null && message.items.length)
+            for (let i = 0; i < message.items.length; ++i)
+                $root.QueryResult.encode(message.items[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified QueryResults message, length delimited. Does not implicitly {@link QueryResults.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof QueryResults
+     * @static
+     * @param {IQueryResults} message QueryResults message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryResults.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a QueryResults message from the specified reader or buffer.
+     * @function decode
+     * @memberof QueryResults
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {QueryResults} QueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryResults.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.QueryResults();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.type = reader.int32();
+                break;
+            case 2:
+                if (!(message.items && message.items.length))
+                    message.items = [];
+                message.items.push($root.QueryResult.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a QueryResults message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof QueryResults
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {QueryResults} QueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryResults.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a QueryResults message.
+     * @function verify
+     * @memberof QueryResults
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    QueryResults.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        if (message.items != null && message.hasOwnProperty("items")) {
+            if (!Array.isArray(message.items))
+                return "items: array expected";
+            for (let i = 0; i < message.items.length; ++i) {
+                let error = $root.QueryResult.verify(message.items[i]);
+                if (error)
+                    return "items." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a QueryResults message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof QueryResults
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {QueryResults} QueryResults
+     */
+    QueryResults.fromObject = function fromObject(object) {
+        if (object instanceof $root.QueryResults)
+            return object;
+        let message = new $root.QueryResults();
+        switch (object.type) {
+        case "THREAD_BACKUPS":
+        case 0:
+            message.type = 0;
+            break;
+        case "CONTACTS":
+        case 1:
+            message.type = 1;
+            break;
+        }
+        if (object.items) {
+            if (!Array.isArray(object.items))
+                throw TypeError(".QueryResults.items: array expected");
+            message.items = [];
+            for (let i = 0; i < object.items.length; ++i) {
+                if (typeof object.items[i] !== "object")
+                    throw TypeError(".QueryResults.items: object expected");
+                message.items[i] = $root.QueryResult.fromObject(object.items[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a QueryResults message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof QueryResults
+     * @static
+     * @param {QueryResults} message QueryResults
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    QueryResults.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.arrays || options.defaults)
+            object.items = [];
+        if (options.defaults)
+            object.type = options.enums === String ? "THREAD_BACKUPS" : 0;
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = options.enums === String ? $root.QueryType[message.type] : message.type;
+        if (message.items && message.items.length) {
+            object.items = [];
+            for (let j = 0; j < message.items.length; ++j)
+                object.items[j] = $root.QueryResult.toObject(message.items[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this QueryResults to JSON.
+     * @function toJSON
+     * @memberof QueryResults
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    QueryResults.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return QueryResults;
+})();
+
+export const PubSubQueryResults = $root.PubSubQueryResults = (() => {
+
+    /**
+     * Properties of a PubSubQueryResults.
+     * @exports IPubSubQueryResults
+     * @interface IPubSubQueryResults
+     * @property {string|null} [id] PubSubQueryResults id
+     * @property {IQueryResults|null} [results] PubSubQueryResults results
+     */
+
+    /**
+     * Constructs a new PubSubQueryResults.
+     * @exports PubSubQueryResults
+     * @classdesc Represents a PubSubQueryResults.
+     * @implements IPubSubQueryResults
+     * @constructor
+     * @param {IPubSubQueryResults=} [properties] Properties to set
+     */
+    function PubSubQueryResults(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * PubSubQueryResults id.
+     * @member {string} id
+     * @memberof PubSubQueryResults
+     * @instance
+     */
+    PubSubQueryResults.prototype.id = "";
+
+    /**
+     * PubSubQueryResults results.
+     * @member {IQueryResults|null|undefined} results
+     * @memberof PubSubQueryResults
+     * @instance
+     */
+    PubSubQueryResults.prototype.results = null;
+
+    /**
+     * Creates a new PubSubQueryResults instance using the specified properties.
+     * @function create
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {IPubSubQueryResults=} [properties] Properties to set
+     * @returns {PubSubQueryResults} PubSubQueryResults instance
+     */
+    PubSubQueryResults.create = function create(properties) {
+        return new PubSubQueryResults(properties);
+    };
+
+    /**
+     * Encodes the specified PubSubQueryResults message. Does not implicitly {@link PubSubQueryResults.verify|verify} messages.
+     * @function encode
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {IPubSubQueryResults} message PubSubQueryResults message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PubSubQueryResults.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.results != null && message.hasOwnProperty("results"))
+            $root.QueryResults.encode(message.results, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified PubSubQueryResults message, length delimited. Does not implicitly {@link PubSubQueryResults.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {IPubSubQueryResults} message PubSubQueryResults message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    PubSubQueryResults.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a PubSubQueryResults message from the specified reader or buffer.
+     * @function decode
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {PubSubQueryResults} PubSubQueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PubSubQueryResults.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.PubSubQueryResults();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.results = $root.QueryResults.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a PubSubQueryResults message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {PubSubQueryResults} PubSubQueryResults
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    PubSubQueryResults.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a PubSubQueryResults message.
+     * @function verify
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    PubSubQueryResults.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.results != null && message.hasOwnProperty("results")) {
+            let error = $root.QueryResults.verify(message.results);
+            if (error)
+                return "results." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a PubSubQueryResults message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {PubSubQueryResults} PubSubQueryResults
+     */
+    PubSubQueryResults.fromObject = function fromObject(object) {
+        if (object instanceof $root.PubSubQueryResults)
+            return object;
+        let message = new $root.PubSubQueryResults();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.results != null) {
+            if (typeof object.results !== "object")
+                throw TypeError(".PubSubQueryResults.results: object expected");
+            message.results = $root.QueryResults.fromObject(object.results);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a PubSubQueryResults message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof PubSubQueryResults
+     * @static
+     * @param {PubSubQueryResults} message PubSubQueryResults
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    PubSubQueryResults.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.results = null;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.results != null && message.hasOwnProperty("results"))
+            object.results = $root.QueryResults.toObject(message.results, options);
+        return object;
+    };
+
+    /**
+     * Converts this PubSubQueryResults to JSON.
+     * @function toJSON
+     * @memberof PubSubQueryResults
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    PubSubQueryResults.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return PubSubQueryResults;
+})();
+
+export const QueryEvent = $root.QueryEvent = (() => {
+
+    /**
+     * Properties of a QueryEvent.
+     * @exports IQueryEvent
+     * @interface IQueryEvent
+     * @property {QueryEvent.Type|null} [type] QueryEvent type
+     * @property {IQueryResult|null} [data] QueryEvent data
+     */
+
+    /**
+     * Constructs a new QueryEvent.
+     * @exports QueryEvent
+     * @classdesc Represents a QueryEvent.
+     * @implements IQueryEvent
+     * @constructor
+     * @param {IQueryEvent=} [properties] Properties to set
+     */
+    function QueryEvent(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * QueryEvent type.
+     * @member {QueryEvent.Type} type
+     * @memberof QueryEvent
+     * @instance
+     */
+    QueryEvent.prototype.type = 0;
+
+    /**
+     * QueryEvent data.
+     * @member {IQueryResult|null|undefined} data
+     * @memberof QueryEvent
+     * @instance
+     */
+    QueryEvent.prototype.data = null;
+
+    /**
+     * Creates a new QueryEvent instance using the specified properties.
+     * @function create
+     * @memberof QueryEvent
+     * @static
+     * @param {IQueryEvent=} [properties] Properties to set
+     * @returns {QueryEvent} QueryEvent instance
+     */
+    QueryEvent.create = function create(properties) {
+        return new QueryEvent(properties);
+    };
+
+    /**
+     * Encodes the specified QueryEvent message. Does not implicitly {@link QueryEvent.verify|verify} messages.
+     * @function encode
+     * @memberof QueryEvent
+     * @static
+     * @param {IQueryEvent} message QueryEvent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryEvent.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+        if (message.data != null && message.hasOwnProperty("data"))
+            $root.QueryResult.encode(message.data, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified QueryEvent message, length delimited. Does not implicitly {@link QueryEvent.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof QueryEvent
+     * @static
+     * @param {IQueryEvent} message QueryEvent message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    QueryEvent.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a QueryEvent message from the specified reader or buffer.
+     * @function decode
+     * @memberof QueryEvent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {QueryEvent} QueryEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryEvent.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.QueryEvent();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.type = reader.int32();
+                break;
+            case 2:
+                message.data = $root.QueryResult.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a QueryEvent message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof QueryEvent
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {QueryEvent} QueryEvent
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    QueryEvent.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a QueryEvent message.
+     * @function verify
+     * @memberof QueryEvent
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    QueryEvent.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        if (message.data != null && message.hasOwnProperty("data")) {
+            let error = $root.QueryResult.verify(message.data);
+            if (error)
+                return "data." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a QueryEvent message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof QueryEvent
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {QueryEvent} QueryEvent
+     */
+    QueryEvent.fromObject = function fromObject(object) {
+        if (object instanceof $root.QueryEvent)
+            return object;
+        let message = new $root.QueryEvent();
+        switch (object.type) {
+        case "DATA":
+        case 0:
+            message.type = 0;
+            break;
+        case "DONE":
+        case 1:
+            message.type = 1;
+            break;
+        }
+        if (object.data != null) {
+            if (typeof object.data !== "object")
+                throw TypeError(".QueryEvent.data: object expected");
+            message.data = $root.QueryResult.fromObject(object.data);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a QueryEvent message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof QueryEvent
+     * @static
+     * @param {QueryEvent} message QueryEvent
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    QueryEvent.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.type = options.enums === String ? "DATA" : 0;
+            object.data = null;
+        }
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = options.enums === String ? $root.QueryEvent.Type[message.type] : message.type;
+        if (message.data != null && message.hasOwnProperty("data"))
+            object.data = $root.QueryResult.toObject(message.data, options);
+        return object;
+    };
+
+    /**
+     * Converts this QueryEvent to JSON.
+     * @function toJSON
+     * @memberof QueryEvent
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    QueryEvent.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Type enum.
+     * @name QueryEvent.Type
+     * @enum {string}
+     * @property {number} DATA=0 DATA value
+     * @property {number} DONE=1 DONE value
+     */
+    QueryEvent.Type = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "DATA"] = 0;
+        values[valuesById[1] = "DONE"] = 1;
+        return values;
+    })();
+
+    return QueryEvent;
+})();
+
+export const ContactQuery = $root.ContactQuery = (() => {
+
+    /**
+     * Properties of a ContactQuery.
+     * @exports IContactQuery
+     * @interface IContactQuery
+     * @property {string|null} [id] ContactQuery id
+     * @property {string|null} [address] ContactQuery address
+     * @property {string|null} [username] ContactQuery username
+     */
+
+    /**
+     * Constructs a new ContactQuery.
+     * @exports ContactQuery
+     * @classdesc Represents a ContactQuery.
+     * @implements IContactQuery
+     * @constructor
+     * @param {IContactQuery=} [properties] Properties to set
+     */
+    function ContactQuery(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ContactQuery id.
+     * @member {string} id
+     * @memberof ContactQuery
+     * @instance
+     */
+    ContactQuery.prototype.id = "";
+
+    /**
+     * ContactQuery address.
+     * @member {string} address
+     * @memberof ContactQuery
+     * @instance
+     */
+    ContactQuery.prototype.address = "";
+
+    /**
+     * ContactQuery username.
+     * @member {string} username
+     * @memberof ContactQuery
+     * @instance
+     */
+    ContactQuery.prototype.username = "";
+
+    /**
+     * Creates a new ContactQuery instance using the specified properties.
+     * @function create
+     * @memberof ContactQuery
+     * @static
+     * @param {IContactQuery=} [properties] Properties to set
+     * @returns {ContactQuery} ContactQuery instance
+     */
+    ContactQuery.create = function create(properties) {
+        return new ContactQuery(properties);
+    };
+
+    /**
+     * Encodes the specified ContactQuery message. Does not implicitly {@link ContactQuery.verify|verify} messages.
+     * @function encode
+     * @memberof ContactQuery
+     * @static
+     * @param {IContactQuery} message ContactQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ContactQuery.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.address != null && message.hasOwnProperty("address"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.address);
+        if (message.username != null && message.hasOwnProperty("username"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.username);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ContactQuery message, length delimited. Does not implicitly {@link ContactQuery.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ContactQuery
+     * @static
+     * @param {IContactQuery} message ContactQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ContactQuery.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ContactQuery message from the specified reader or buffer.
+     * @function decode
+     * @memberof ContactQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ContactQuery} ContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ContactQuery.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ContactQuery();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.string();
+                break;
+            case 2:
+                message.address = reader.string();
+                break;
+            case 3:
+                message.username = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ContactQuery message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ContactQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ContactQuery} ContactQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ContactQuery.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ContactQuery message.
+     * @function verify
+     * @memberof ContactQuery
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ContactQuery.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
+        if (message.address != null && message.hasOwnProperty("address"))
+            if (!$util.isString(message.address))
+                return "address: string expected";
+        if (message.username != null && message.hasOwnProperty("username"))
+            if (!$util.isString(message.username))
+                return "username: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a ContactQuery message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ContactQuery
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ContactQuery} ContactQuery
+     */
+    ContactQuery.fromObject = function fromObject(object) {
+        if (object instanceof $root.ContactQuery)
+            return object;
+        let message = new $root.ContactQuery();
+        if (object.id != null)
+            message.id = String(object.id);
+        if (object.address != null)
+            message.address = String(object.address);
+        if (object.username != null)
+            message.username = String(object.username);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ContactQuery message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ContactQuery
+     * @static
+     * @param {ContactQuery} message ContactQuery
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ContactQuery.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults) {
+            object.id = "";
+            object.address = "";
+            object.username = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.address != null && message.hasOwnProperty("address"))
+            object.address = message.address;
+        if (message.username != null && message.hasOwnProperty("username"))
+            object.username = message.username;
+        return object;
+    };
+
+    /**
+     * Converts this ContactQuery to JSON.
+     * @function toJSON
+     * @memberof ContactQuery
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ContactQuery.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ContactQuery;
+})();
+
+export const ThreadBackupQuery = $root.ThreadBackupQuery = (() => {
+
+    /**
+     * Properties of a ThreadBackupQuery.
+     * @exports IThreadBackupQuery
+     * @interface IThreadBackupQuery
+     * @property {string|null} [address] ThreadBackupQuery address
+     */
+
+    /**
+     * Constructs a new ThreadBackupQuery.
+     * @exports ThreadBackupQuery
+     * @classdesc Represents a ThreadBackupQuery.
+     * @implements IThreadBackupQuery
+     * @constructor
+     * @param {IThreadBackupQuery=} [properties] Properties to set
+     */
+    function ThreadBackupQuery(properties) {
+        if (properties)
+            for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ThreadBackupQuery address.
+     * @member {string} address
+     * @memberof ThreadBackupQuery
+     * @instance
+     */
+    ThreadBackupQuery.prototype.address = "";
+
+    /**
+     * Creates a new ThreadBackupQuery instance using the specified properties.
+     * @function create
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {IThreadBackupQuery=} [properties] Properties to set
+     * @returns {ThreadBackupQuery} ThreadBackupQuery instance
+     */
+    ThreadBackupQuery.create = function create(properties) {
+        return new ThreadBackupQuery(properties);
+    };
+
+    /**
+     * Encodes the specified ThreadBackupQuery message. Does not implicitly {@link ThreadBackupQuery.verify|verify} messages.
+     * @function encode
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {IThreadBackupQuery} message ThreadBackupQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ThreadBackupQuery.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.address != null && message.hasOwnProperty("address"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.address);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ThreadBackupQuery message, length delimited. Does not implicitly {@link ThreadBackupQuery.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {IThreadBackupQuery} message ThreadBackupQuery message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ThreadBackupQuery.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ThreadBackupQuery message from the specified reader or buffer.
+     * @function decode
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ThreadBackupQuery} ThreadBackupQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ThreadBackupQuery.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ThreadBackupQuery();
+        while (reader.pos < end) {
+            let tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.address = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ThreadBackupQuery message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ThreadBackupQuery} ThreadBackupQuery
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ThreadBackupQuery.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ThreadBackupQuery message.
+     * @function verify
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ThreadBackupQuery.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.address != null && message.hasOwnProperty("address"))
+            if (!$util.isString(message.address))
+                return "address: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a ThreadBackupQuery message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ThreadBackupQuery} ThreadBackupQuery
+     */
+    ThreadBackupQuery.fromObject = function fromObject(object) {
+        if (object instanceof $root.ThreadBackupQuery)
+            return object;
+        let message = new $root.ThreadBackupQuery();
+        if (object.address != null)
+            message.address = String(object.address);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ThreadBackupQuery message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ThreadBackupQuery
+     * @static
+     * @param {ThreadBackupQuery} message ThreadBackupQuery
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ThreadBackupQuery.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        let object = {};
+        if (options.defaults)
+            object.address = "";
+        if (message.address != null && message.hasOwnProperty("address"))
+            object.address = message.address;
+        return object;
+    };
+
+    /**
+     * Converts this ThreadBackupQuery to JSON.
+     * @function toJSON
+     * @memberof ThreadBackupQuery
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ThreadBackupQuery.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ThreadBackupQuery;
 })();
 
 export const ThreadEnvelope = $root.ThreadEnvelope = (() => {
